@@ -1,0 +1,160 @@
+﻿.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.input-validation-error,
+.is-invalid {
+    border: 1px solid #dc3545 !important;
+    background-color: #fff5f5 !important;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+}
+body {
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.sidebar {
+    width: 260px;
+    background-color: #0d3b66;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+    .sidebar .logo {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding-left: 5px; 
+    }
+
+        .sidebar .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+    .sidebar .divider {
+        height: 2px; 
+        background-color: rgba(255, 255, 255, 0.5);
+        margin: 18px 0;
+        border-radius: 2px;
+    }
+
+    .sidebar .nav-link {
+        color: white;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 14px; 
+        padding: 12px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+
+        .sidebar .nav-link:hover {
+            transform: translateX(6px); 
+            background-color: #064273;
+            text-decoration: none;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #055293;
+        }
+
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+.custom-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+    .custom-table thead tr {
+        background: #f0f0f0;
+        color: #333;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+        .custom-table thead tr.filter-row {
+            background: #fafafa !important;
+        }
+
+    .custom-table th,
+    .custom-table td {
+        padding: 9px 12px; 
+        vertical-align: middle;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .custom-table .filter-input {
+        font-size: 15px;
+        padding: 7px 12px;
+        height: 38px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .custom-table .filter-input:focus {
+            border-color: #198754;
+            box-shadow: 0 0 4px rgba(25, 135, 84, 0.3);
+            outline: none;
+        }
+
+    .custom-table .btn {
+        border-radius: 6px;
+    }
+
+    .custom-table .filter-row .btn {
+        padding: 4px 10px;
+        font-size: 13px;
+    }
+
+    .custom-table tbody tr {
+        transition: all 0.2s ease-in-out;
+    }
+
+        .custom-table tbody tr:hover {
+            background-color: #f6f9fc;
+        }
+
+        .custom-table tbody tr td.text-muted {
+            font-style: italic;
+        }

@@ -1,0 +1,30 @@
+﻿@if (TempData["ToastMessage"] != null)
+{
+    var toastType = TempData["ToastType"] != null ? TempData["ToastType"].ToString() : "info";
+
+    var alertClass = "alert-info text-dark fw-bold"; // default
+    switch (toastType.ToLower())
+    {
+        case "success":
+            alertClass = "alert-success text-center fw-bold";
+            break;
+        case "warning": 
+            alertClass = "alert-warning text-dark text-center fw-bold";
+            break;
+        case "danger": 
+            alertClass = "alert-danger text-center fw-bold";
+            break;
+    }
+
+    <div id="toastMessage"
+         class="alert @alertClass alert-dismissible fade show"
+         style="position:fixed; top:20px; left:50%; transform:translateX(-50%); min-width:300px; z-index:9999;">
+        @TempData["ToastMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            $("#toastMessage").fadeOut("slow", function () { $(this).remove(); });
+        }, 3000);
+    </script>
+}

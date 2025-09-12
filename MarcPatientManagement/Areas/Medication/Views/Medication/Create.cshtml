@@ -1,0 +1,87 @@
+﻿@model EL.MedicationEntity
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "New Record";
+}
+
+<h2>New Record</h2>
+
+@using (Html.BeginForm("Create", "Medication", new { area = "Medication" }, FormMethod.Post, new { id = "createForm", novalidate = "novalidate" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Patient)
+        @Html.TextBoxFor(m => m.Patient, new
+    {
+        @class = "form-control",
+        placeholder = "Enter patient name",
+        autofocus = "autofocus",
+        title = "Patient name must contain only letters, spaces, apostrophes, or hyphens, and cannot start or end with a space."
+        })
+        @Html.ValidationMessageFor(m => m.Patient, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Drug)
+        @Html.TextBoxFor(m => m.Drug, new
+    {
+            @class = "form-control",
+       placeholder = "Enter drug name",
+       title = "Drug name must be alphanumeric and can include spaces, but no special characters. Maximum length is 50 characters."
+    })
+        @Html.ValidationMessageFor(m => m.Drug, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Dosage)
+        @Html.TextBoxFor(m => m.Dosage, new
+        {
+            @class = "form-control",
+            placeholder = "Enter dosage",
+            step = "0.0001",
+            min = "0.01",
+            max = "999.9999",
+            oninput = "this.value=this.value.replace(/[^0-9.]/g,'')",
+            title = "Dosage must be a positive number with up to four decimal places, between 0.01 and 999.9999."
+        })
+        @Html.ValidationMessageFor(m => m.Dosage, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="d-flex mb-3">
+        <button type="button" id="saveBtn" class="btn btn-success me-2">Save</button>
+        <button type="reset" class="btn btn-warning me-2">Clear All</button>
+        @Html.ActionLink("Cancel", "Index", "Medication", new { area = "Medication" }, new { @class = "btn btn-secondary" })
+    </div>
+}
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to add this record?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelSave">Cancel</button>
+                <button type="button" id="confirmSave" class="btn btn-success">Yes, Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        window.checkDuplicateUrl = '@Url.Action("CheckDuplicate", "Medication", new { area = "Medication" })';
+    </script>
+
+    <script src="~/Scripts/Page/Medication/Create.js"></script>
+}
+

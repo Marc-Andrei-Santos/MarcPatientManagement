@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Marc's Patient Management</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="~/Content/CSS/bootstrap/bootstrap.css" rel="stylesheet" />
+
+    <!-- Site CSS -->
+    <link href="~/Content/CSS/site/Site.css" rel="stylesheet" />
+    @RenderSection("Styles", required: false)
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="~/Content/Images/h2.png" alt="Logo" />
+            <span>Patient Management</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Dashboard -->
+        <a href="@Url.Action("Index", "Dashboard", new { area = "Medication" })"
+           class="nav-link @(ViewBag.ActiveTab == "Dashboard" ? "active" : "")">
+            <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+        </a>
+
+        <!-- Medication -->
+        <a href="@Url.Action("Index", "Medication", new { area = "Medication" })"
+           class="nav-link @(ViewBag.ActiveTab == "Medication" ? "active" : "")">
+            <i class="fas fa-pills"></i> <span>Medication</span>
+        </a>
+    </div>
+
+    <div class="main-content">
+        @RenderBody()
+        <hr />
+    </div>
+
+    @Html.Partial("_Toast")
+
+    <script src="~/Scripts/lib/jquery-3.7.0.js"></script>
+    <script src="~/Scripts/lib/bootstrap.js"></script>
+    <script src="~/Scripts/lib/jquery.validate.js"></script>
+    <script src="~/Scripts/lib/jquery.validate.unobtrusive.js"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

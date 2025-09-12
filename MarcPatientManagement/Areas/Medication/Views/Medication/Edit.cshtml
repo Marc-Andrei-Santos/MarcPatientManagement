@@ -1,0 +1,74 @@
+﻿@model EL.MedicationEntity
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Edit Record";
+}
+
+<h2>Edit Record</h2>
+
+@using (Html.BeginForm("Edit", "Medication", new { area = "Medication" }, FormMethod.Post, new { id = "editForm", novalidate = "novalidate" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Patient)
+        @Html.TextBoxFor(m => m.Patient, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Patient, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Drug)
+        @Html.TextBoxFor(m => m.Drug, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Drug, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Dosage)
+        @Html.TextBoxFor(m => m.Dosage, new { @class = "form-control", step = "0.0001", min = "0.01", max = "999.9999" })
+        @Html.ValidationMessageFor(m => m.Dosage, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="mb-3">
+        @Html.LabelFor(m => m.ModifiedDate)
+        @Html.TextBoxFor(m => m.ModifiedDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+        @Html.ValidationMessageFor(m => m.ModifiedDate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="d-flex mb-3">
+        <button type="button" id="updateBtn" class="btn btn-success me-2">Update</button>
+        <button type="button" id="clearAllBtn" class="btn btn-warning me-2">Clear All</button>
+        @Html.ActionLink("Cancel", "Index", "Medication", new { area = "Medication" }, new { @class = "btn btn-secondary" })
+    </div>
+}
+
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmUpdateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to update this record?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelUpdate">Cancel</button>
+                <button type="button" id="confirmUpdate" class="btn btn-success">Yes, Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    @section scripts {
+        <script>
+        window.checkDuplicateUrl = '@Url.Action("CheckDuplicate", "Medication", new { area = "Medication" })';
+        </script>
+
+        <script src="~/Scripts/Page/Medication/Edit.js"></script>
+    }
