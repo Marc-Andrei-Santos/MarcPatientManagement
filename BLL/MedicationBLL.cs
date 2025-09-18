@@ -2,6 +2,7 @@
 using EL;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UL;
 
 namespace BLL
@@ -17,82 +18,121 @@ namespace BLL
 
         public MedicationEntity GetById(int id) => _dal.GetById(id);
 
-        // Insert
         public MedicationEntity Insert(MedicationEntity entity)
         {
             var result = new MedicationEntity();
+            try
+            {
+                var validation = ValidateEntity(entity);
+                if (validation != null) return validation;
 
-            if (!ValidationUtil.IsValidPatient(entity.Patient))
+                var success = _dal.Insert(entity);
+                result.IsSuccess = success;
+                result.MessageList.Add(success ? MessageUtil.RecordCreated : MessageUtil.SaveFailed);
+            }
+            catch (Exception ex)
             {
                 result.IsSuccess = false;
-                result.MessageList.Add(MessageUtil.InvalidPatient);
-                return result;
+                result.MessageList.Add("Unexpected error while saving: " + ex.Message);
             }
-
-            if (!ValidationUtil.IsValidDrug(entity.Drug))
-            {
-                result.IsSuccess = false;
-                result.MessageList.Add(MessageUtil.InvalidDrug);
-                return result;
-            }
-
-            if (!ValidationUtil.IsValidDosage(entity.Dosage))
-            {
-                result.IsSuccess = false;
-                result.MessageList.Add(MessageUtil.InvalidDosage);
-                return result;
-            }
-
-            var success = _dal.Insert(entity);
-            result.IsSuccess = success;
-            result.MessageList.Add(success ? MessageUtil.RecordCreated : "Failed to save record.");
 
             return result;
         }
 
-        // Update
         public MedicationEntity Update(MedicationEntity entity)
         {
             var result = new MedicationEntity();
+            try
+            {
+                var original = GetById(entity.Id);
+                if (original.Patient == entity.Patient &&
+                    original.Drug == entity.Drug &&
+                    original.Dosage == entity.Dosage &&
+                    original.ModifiedDate.Date == entity.ModifiedDate.Date)
+                {
+                    result.IsSuccess = false;
+                    result.MessageList.Add(MessageUtil.NoChanges);
+                    return result;
+                }
 
-            if (!ValidationUtil.IsValidPatient(entity.Patient))
+                var validation = ValidateEntity(entity, true);
+                if (validation != null) return validation;
+
+                var success = _dal.Update(entity);
+                result.IsSuccess = success;
+                result.MessageList.Add(success ? MessageUtil.RecordUpdated : MessageUtil.UpdateFailed);
+            }
+            catch (Exception ex)
             {
                 result.IsSuccess = false;
-                result.MessageList.Add(MessageUtil.InvalidPatient);
-                return result;
+                result.MessageList.Add("Unexpected error while updating: " + ex.Message);
             }
-
-            if (!ValidationUtil.IsValidDrug(entity.Drug))
-            {
-                result.IsSuccess = false;
-                result.MessageList.Add(MessageUtil.InvalidDrug);
-                return result;
-            }
-
-            if (entity.Dosage <= 0)
-            {
-                result.IsSuccess = false;
-                result.MessageList.Add(MessageUtil.InvalidDosage);
-                return result;
-            }
-
-            var success = _dal.Update(entity);
-            result.IsSuccess = success;
-            result.MessageList.Add(success ? MessageUtil.RecordUpdated : "Failed to update record.");
 
             return result;
         }
 
-        // Delete
         public MedicationEntity Delete(int id)
         {
             var result = new MedicationEntity();
-
-            var success = _dal.Delete(id);
-            result.IsSuccess = success;
-            result.MessageList.Add(success ? MessageUtil.RecordDeleted : "Error deleting record.");
+            try
+            {
+                var success = _dal.Delete(id);
+                result.IsSuccess = success;
+                result.MessageList.Add(success ? MessageUtil.RecordDeleted : MessageUtil.DeleteFailed);
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.MessageList.Add("Unexpected error while deleting: " + ex.Message);
+            }
 
             return result;
+        }
+
+
+        // Helper Validate Entity
+        private MedicationEntity ValidateEntity(MedicationEntity entity, bool isUpdate = false)
+        {
+            var result = new MedicationEntity();
+
+            if (!ValidationUtil.IsValidPatient(entity.Patient))
+                result.MessageList.Add(MessageUtil.InvalidPatient);
+
+            if (!ValidationUtil.IsValidDrug(entity.Drug))
+                result.MessageList.Add(MessageUtil.InvalidDrug);
+
+            if (!ValidationUtil.IsValidDosage(entity.Dosage))
+                result.MessageList.Add(MessageUtil.InvalidDosage);
+
+            if (result.MessageList.Any())
+            {
+                result.IsSuccess = false;
+                return result;
+            }
+
+            var existing = GetFiltered(entity.Patient, entity.Drug, null, entity.ModifiedDate.Date)
+                           .Where(x => !isUpdate || x.Id != entity.Id);
+
+            if (existing.Any(x => x.Patient == entity.Patient &&
+                                  x.Drug == entity.Drug &&
+                                  x.Dosage == entity.Dosage &&
+                                  x.ModifiedDate.Date == entity.ModifiedDate.Date))
+            {
+                result.IsSuccess = false;
+                result.MessageList.Add(MessageUtil.RecordAlreadyExists);
+                return result;
+            }
+
+            if (existing.Any(x => x.Patient == entity.Patient &&
+                                  x.Drug == entity.Drug &&
+                                  x.ModifiedDate.Date == entity.ModifiedDate.Date))
+            {
+                result.IsSuccess = false;
+                result.MessageList.Add(MessageUtil.DuplicateRecord);
+                return result;
+            }
+
+            return null;
         }
     }
 }

@@ -14,13 +14,12 @@
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  
 </head>
 <body>
     <div class="sidebar">
-        <div class="logo">
-            <img src="~/Content/Images/h2.png" alt="Logo" />
-            <span>Patient Management</span>
+        <div class="logo" style="display: flex; align-items: center; gap: 10px; padding-left: 5px;">
+            <img src="~/Content/Images/h2.png" alt="Logo" style="height:50px; width:auto;" />
+            <span style="font-size:1rem; font-weight:bold;">Marc Patient Management</span>
         </div>
 
         <div class="divider"></div>
@@ -50,6 +49,24 @@
     <script src="~/Scripts/lib/jquery.validate.js"></script>
     <script src="~/Scripts/lib/jquery.validate.unobtrusive.js"></script>
 
+    <script>
+    window.Messages = {
+        InvalidPatient: '@UL.MessageUtil.InvalidPatient',
+        InvalidDrug: '@UL.MessageUtil.InvalidDrug',
+        InvalidDosage: '@UL.MessageUtil.InvalidDosage',
+        DuplicateRecord: '@UL.MessageUtil.DuplicateRecord',
+        RecordAlreadyExists: '@UL.MessageUtil.RecordAlreadyExists',
+        NoChanges: '@UL.MessageUtil.NoChanges'
+    };
+    </script>
+
+    <!-- Global JS Scripts -->
+    <script src="~/Scripts/Page/Medication/Create.js"></script>
+    <script src="~/Scripts/Page/Medication/Edit.js"></script>
+    <script src="~/Scripts/Page/Medication/Delete.js"></script>
+    <script src="~/Scripts/Page/Medication/Toast.js"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
+

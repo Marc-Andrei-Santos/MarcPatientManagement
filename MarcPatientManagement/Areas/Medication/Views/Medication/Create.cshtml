@@ -7,6 +7,8 @@
 
 <h2>New Record</h2>
 
+<br />
+
 @using (Html.BeginForm("Create", "Medication", new { area = "Medication" }, FormMethod.Post, new { id = "createForm", novalidate = "novalidate" }))
 {
     @Html.AntiForgeryToken()
@@ -27,7 +29,7 @@
         @Html.LabelFor(m => m.Drug)
         @Html.TextBoxFor(m => m.Drug, new
     {
-            @class = "form-control",
+       @class = "form-control",
        placeholder = "Enter drug name",
        title = "Drug name must be alphanumeric and can include spaces, but no special characters. Maximum length is 50 characters."
     })
@@ -48,6 +50,8 @@
         })
         @Html.ValidationMessageFor(m => m.Dosage, "", new { @class = "text-danger" })
     </div>
+
+    <hr />
 
     <div class="d-flex mb-3">
         <button type="button" id="saveBtn" class="btn btn-success me-2">Save</button>
@@ -71,7 +75,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelSave">Cancel</button>
-                <button type="button" id="confirmSave" class="btn btn-success">Yes, Save</button>
+                <button type="button" id="confirmSave" class="btn btn-success">Yes</button>
             </div>
         </div>
     </div>
@@ -82,6 +86,5 @@
         window.checkDuplicateUrl = '@Url.Action("CheckDuplicate", "Medication", new { area = "Medication" })';
     </script>
 
-    <script src="~/Scripts/Page/Medication/Create.js"></script>
+   
 }
-

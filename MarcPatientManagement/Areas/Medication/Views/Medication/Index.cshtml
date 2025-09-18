@@ -147,7 +147,7 @@
         }
         Showing @startRecord to @endRecord of @ViewBag.TotalRecords entries
     </div>
-</form> 
+</form>
 
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -166,27 +166,9 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <form id="deleteForm" method="post" style="display:inline;">
                     @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    <button type="submit" class="btn btn-danger">Yes</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-@section scripts {
-    <script>
-        $(function () {
-            var deleteForm = $("#deleteForm");
-
-            $(".delete-btn").click(function () {
-                var id = $(this).data("id");
-                deleteForm.attr("action", "/Medication/Medication/DeleteConfirmed/" + id);
-                $("#deleteModal").modal("show");
-            });
-
-            $(".btn-secondary").click(function () {
-                $("#deleteModal").modal("hide");
-            });
-        });
-    </script>
-}

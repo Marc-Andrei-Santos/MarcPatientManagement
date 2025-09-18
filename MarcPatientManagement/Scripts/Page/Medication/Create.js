@@ -1,17 +1,8 @@
 ﻿$(function () {
-
-    function showToast(message) {
-        var toast = $('<div class="alert alert-danger" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); min-width:300px; z-index:9999;">' + message + '</div>');
-        $("body").append(toast);
-        setTimeout(function () {
-            toast.fadeOut("slow", function () { $(this).remove(); });
-        }, 3000);
-    }
-
     $("#saveBtn").click(function () {
         var form = $("#createForm");
         if (!form.valid()) {
-            return; 
+            return;
         }
 
         var patient = $("#Patient").val();
@@ -21,7 +12,7 @@
 
         var patientPattern = /^(?=.*[A-Za-z])[A-Za-z\s'-]+$/;
         if (!patientPattern.test(patient) || patient.startsWith(" ") || patient.endsWith(" ")) {
-            showToast("Invalid Patient name.");
+            showToast(window.Messages.InvalidPatient, "danger");
             $("#Patient").addClass("input-validation-error");
             return;
         } else {
@@ -30,7 +21,7 @@
 
         var drugPattern = /^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*$/;
         if (!drugPattern.test(drug) || drug.length > 50) {
-            showToast("Invalid Drug name.");
+            showToast(window.Messages.InvalidDrug, "danger");
             $("#Drug").addClass("input-validation-error");
             return;
         } else {
@@ -39,7 +30,7 @@
 
         var dosagePattern = /^\d+(\.\d{1,4})?$/;
         if (isNaN(dosage) || dosage <= 0 || !dosagePattern.test(dosage.toString())) {
-            showToast("Invalid Dosage.");
+            showToast(window.Messages.InvalidDosage, "danger");
             $("#Dosage").addClass("input-validation-error");
             return;
         } else {
@@ -47,13 +38,23 @@
         }
 
         $.post(window.checkDuplicateUrl,
-            { patient: patient, drug: drug, date: date },
+            { patient: patient, drug: drug, date: date, dosage: dosage },
             function (res) {
                 if (res.isDuplicate) {
-                    showToast(res.message);
-                    $("#Drug").addClass("input-validation-error");
+                    const msg = res.message;
+                    showToast(msg, "danger");
+
+                    $("#Patient, #Drug, #Dosage").removeClass("input-validation-error");
+
+                    if (msg === window.Messages.DuplicateRecord) {
+                        $("#Patient, #Drug").addClass("input-validation-error");
+                    } else if (msg === window.Messages.RecordAlreadyExists) {
+                        $("#Patient, #Drug, #Dosage").addClass("input-validation-error"); // ✅ lahat
+                    } else if (msg === window.Messages.NoChanges) {
+                        $("#Patient, #Drug, #Dosage").addClass("input-validation-error"); // ✅ lahat
+                    }
                 } else {
-                    $("#Drug").removeClass("input-validation-error");
+                    $("#Patient, #Drug, #Dosage").removeClass("input-validation-error");
                     $("#confirmModal").modal("show");
                 }
             });
@@ -71,5 +72,4 @@
     $("#Patient, #Drug, #Dosage").on("input", function () {
         $(this).removeClass("input-validation-error");
     });
-
 });

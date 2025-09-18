@@ -4,7 +4,7 @@ namespace DAL
 {
     public class DbConnectionDAL
     {
-        private readonly string _connectionString;
+        protected readonly string _connectionString;
 
         public DbConnectionDAL()
         {

@@ -7,14 +7,21 @@
         public const string RecordUpdated = "Record successfully updated.";
         public const string RecordDeleted = "Record successfully deleted.";
 
-        // Validation
+        // Failed Messages
+        public const string SaveFailed = "Failed to save record.";
+        public const string UpdateFailed = "Failed to update record.";
+        public const string DeleteFailed = "Failed to delete record.";
+
+        // Validation Messages
         public const string DuplicateRecord = "You cannot add same drug to a patient.";
+        public const string RecordAlreadyExists = "Record already exists.";
+        public const string NoChanges = "It seems nothing was changed. Click cancel to return.";
+
+        // Input Validation Messages
         public const string InvalidPatient = "Patient name is invalid. It must only contain letters, spaces, hyphen (-), or apostrophe (') and cannot start or end with a space.";
         public const string InvalidDrug = "Drug name is invalid. It must only contain letters, numbers, and spaces and cannot start or end with a space.";
         public const string InvalidDosage = "Dosage is invalid. Must be greater than zero and can have up to 4 decimal places.";
         public const string NegativeDosage = "Dosage cannot be negative.";
-        //public const string ExactDuplicateRecord = "Record already exists.";
-        public const string SaveFailed = "Failed to save record.";
-       
+
     }
 }
