@@ -16,7 +16,7 @@ namespace EL
         public string Drug { get; set; }
 
         [Required(ErrorMessage = "Dosage is required.")]
-        [Range(0.0001, 999.9999, ErrorMessage = "Dosage must be greater than zero.")]
+        [Range(0.0001, 999.9999)]
         public decimal? Dosage { get; set; }
 
         public DateTime ModifiedDate { get; set; }

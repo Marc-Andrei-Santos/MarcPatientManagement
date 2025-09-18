@@ -44,11 +44,11 @@ namespace BLL
             var result = new MedicationEntity();
             try
             {
-                var original = GetById(entity.Id);
-                if (original.Patient == entity.Patient &&
-                    original.Drug == entity.Drug &&
-                    original.Dosage == entity.Dosage &&
-                    original.ModifiedDate.Date == entity.ModifiedDate.Date)
+                var currentRecord = GetById(entity.Id);
+                if (currentRecord.Patient == entity.Patient &&
+                    currentRecord.Drug == entity.Drug &&
+                    currentRecord.Dosage == entity.Dosage &&
+                    currentRecord.ModifiedDate.Date == entity.ModifiedDate.Date)
                 {
                     result.IsSuccess = false;
                     result.MessageList.Add(MessageUtil.NoChanges);
@@ -88,7 +88,6 @@ namespace BLL
 
             return result;
         }
-
 
         // Helper Validate Entity
         private MedicationEntity ValidateEntity(MedicationEntity entity, bool isUpdate = false)

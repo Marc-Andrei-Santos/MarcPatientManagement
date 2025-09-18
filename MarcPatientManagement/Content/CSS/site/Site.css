@@ -5,10 +5,6 @@
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-
 .dl-horizontal dt {
     white-space: normal;
 }
@@ -164,20 +160,24 @@ body {
             font-style: italic;
         }
 
+
 .sidebar .github-link {
     margin-top: auto;
     color: white;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 18px;
+    justify-content: center; 
+    gap: 8px;
+    padding: 8px 14px;
     border-radius: 6px;
     text-decoration: none;
-    background-color: #555; 
+    background-color: #555;
     transition: background-color 0.3s ease;
+    font-size: 14px;
 }
 
-    .sidebar .github-link:hover {
-        background-color: #666;
-        text-decoration: none;
+    .sidebar .github-link i,
+    .sidebar .github-link span {
+        position: relative;
+        left: -6px; 
     }
