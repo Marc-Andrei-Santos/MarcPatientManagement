@@ -9,12 +9,13 @@
     <link href="~/Content/CSS/bootstrap/bootstrap.css" rel="stylesheet" />
 
     <!-- Site CSS -->
-    <link href="~/Content/CSS/site/Site.css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/CSS/site/site.css")" rel="stylesheet" />
     @RenderSection("Styles", required: false)
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
+
 <body>
     <div class="sidebar">
         <div class="logo" style="display: flex; align-items: center; gap: 10px; padding-left: 5px;">
@@ -35,12 +36,20 @@
            class="nav-link @(ViewBag.ActiveTab == "Medication" ? "active" : "")">
             <i class="fas fa-pills"></i> <span>Medication</span>
         </a>
+
+        <!-- View on GitHub -->
+        <a href="https://github.com/Marc-Andrei-Santos/MarcPatientManagement.git" class="github-link"
+           target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github"></i>
+            <span>View on GitHub</span>
+        </a>
     </div>
 
     <div class="main-content">
         @RenderBody()
         <hr />
     </div>
+
 
     @Html.Partial("_Toast")
 
@@ -67,6 +76,7 @@
     <script src="~/Scripts/Page/Medication/Toast.js"></script>
 
     @RenderSection("scripts", required: false)
+
 </body>
 </html>
 
