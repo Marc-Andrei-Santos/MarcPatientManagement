@@ -2,25 +2,26 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "New Record";
+    ViewBag.Title = "Edit Record";
 }
 
-<h2>New Record</h2>
+<h2>Edit Record</h2>
 
 <br />
 
-@using (Html.BeginForm("Create", "Medication", new { area = "Medication" }, FormMethod.Post, new { id = "createForm", novalidate = "novalidate" }))
+@using (Html.BeginForm("Edit", "Medication", new { area = "Medication" }, FormMethod.Post, new { id = "editForm", novalidate = "novalidate" }))
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
 
     <div class="mb-3">
         @Html.LabelFor(m => m.Patient)
         @Html.TextBoxFor(m => m.Patient, new
-    {
-        @class = "form-control",
-        placeholder = "Enter patient name",
-        autofocus = "autofocus",
-        title = "Patient name must contain only letters, spaces, apostrophes, or hyphens, and cannot start or end with a space."
+        {
+            @class = "form-control",
+            placeholder = "Enter patient name",
+            autofocus = "autofocus",
+            title = "Patient name must contain only letters, spaces, apostrophes, or hyphens, and cannot start or end with a space."
         })
         @Html.ValidationMessageFor(m => m.Patient, "", new { @class = "text-danger" })
     </div>
@@ -28,11 +29,11 @@
     <div class="mb-3">
         @Html.LabelFor(m => m.Drug)
         @Html.TextBoxFor(m => m.Drug, new
-    {
-       @class = "form-control",
-       placeholder = "Enter drug name",
-       title = "Drug name must be alphanumeric and can include spaces, but no special characters. Maximum length is 50 characters."
-    })
+        {
+            @class = "form-control",
+            placeholder = "Enter drug name",
+            title = "Drug name must be alphanumeric and can include spaces, but no special characters. Maximum length is 50 characters."
+        })
         @Html.ValidationMessageFor(m => m.Drug, "", new { @class = "text-danger" })
     </div>
 
@@ -51,17 +52,27 @@
         @Html.ValidationMessageFor(m => m.Dosage, "", new { @class = "text-danger" })
     </div>
 
-    <hr />
+    <div class="mb-3">
+        @Html.LabelFor(m => m.ModifiedDate)
+        @Html.TextBoxFor(m => m.ModifiedDate, "{0:yyyy-MM-dd}", new
+        {
+            @class = "form-control",
+            type = "date",
+            title = "Select the modified date"
+        })
+        @Html.ValidationMessageFor(m => m.ModifiedDate, "", new { @class = "text-danger" })
+    </div>
 
+    <hr />
     <div class="d-flex mb-3">
-        <button type="button" id="saveBtn" class="btn btn-success me-2">Save</button>
-        <button type="reset" class="btn btn-warning me-2">Clear All</button>
+        <button type="button" id="updateBtn" class="btn btn-success me-2">Update</button>
+        <button type="button" id="clearAllBtn" class="btn btn-warning me-2">Clear All</button>
         @Html.ActionLink("Cancel", "Index", "Medication", new { area = "Medication" }, new { @class = "btn btn-secondary" })
     </div>
 }
 
 <!-- Confirmation Modal -->
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="confirmUpdateModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -71,11 +82,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to add this record?
+                Are you sure you want to update this record?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelSave">Cancel</button>
-                <button type="button" id="confirmSave" class="btn btn-success">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelUpdate">Cancel</button>
+                <button type="button" id="confirmUpdate" class="btn btn-success">Yes</button>
             </div>
         </div>
     </div>
@@ -85,6 +96,4 @@
     <script>
         window.checkDuplicateUrl = '@Url.Action("CheckDuplicate", "Medication", new { area = "Medication" })';
     </script>
-
-   
 }

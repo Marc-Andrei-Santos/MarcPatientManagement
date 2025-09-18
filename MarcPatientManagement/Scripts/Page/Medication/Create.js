@@ -49,9 +49,9 @@
                     if (msg === window.Messages.DuplicateRecord) {
                         $("#Patient, #Drug").addClass("input-validation-error");
                     } else if (msg === window.Messages.RecordAlreadyExists) {
-                        $("#Patient, #Drug, #Dosage").addClass("input-validation-error"); // ✅ lahat
+                        $("#Patient, #Drug, #Dosage").addClass("input-validation-error"); 
                     } else if (msg === window.Messages.NoChanges) {
-                        $("#Patient, #Drug, #Dosage").addClass("input-validation-error"); // ✅ lahat
+                        $("#Patient, #Drug, #Dosage").addClass("input-validation-error");
                     }
                 } else {
                     $("#Patient, #Drug, #Dosage").removeClass("input-validation-error");

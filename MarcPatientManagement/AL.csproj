@@ -147,6 +147,7 @@
     <Content Include="Content\CSS\bootstrap\bootstrap.rtl.min.css" />
     <Content Include="Content\CSS\site\Site.css" />
     <Content Include="Content\images\h2.png" />
+    <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Medication\Views\web.config" />
@@ -176,6 +177,8 @@
     <Content Include="Scripts\lib\bootstrap.js" />
     <Content Include="Scripts\lib\bootstrap.min.js" />
     <Content Include="Areas\Medication\Views\Dashboard\Index.cshtml" />
+    <Content Include="Areas\Medication\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Medication\Views\Shared\_Layout.cshtml" />
     <None Include="Scripts\lib\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\lib\jquery-3.7.0.js" />
     <Content Include="Scripts\lib\jquery-3.7.0.min.js" />
