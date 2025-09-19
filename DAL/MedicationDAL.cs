@@ -44,27 +44,30 @@ namespace DAL
 
         public List<MedicationEntity> GetFiltered(string patient, string drug, decimal? dosage, DateTime? modifiedDate)
         {
-            var result = new List<MedicationEntity>();
-            try
+            var results = new List<MedicationEntity>();
+
+            using (var conn = GetConnection())
             {
-                using (var conn = new SqlConnection(_connectionString))
+                conn.Open();
+
+                string query = @"SELECT Id, Patient, Drug, Dosage, ModifiedDate
+                         FROM MedicationRecords
+                         WHERE 1=1";
+
+                using (SqlCommand cmd = new SqlCommand())
                 {
-                    conn.Open();
-                    var cmd = new SqlCommand();
                     cmd.Connection = conn;
 
-                    var query = "SELECT Id, Patient, Dosage, Drug, ModifiedDate FROM MedicationRecords WHERE 1=1";
-
-                    if (!string.IsNullOrEmpty(patient))
+                    if (!string.IsNullOrWhiteSpace(patient))
                     {
-                        query += " AND Patient LIKE @Patient";
-                        cmd.Parameters.AddWithValue("@Patient", "%" + patient + "%");
+                        query += " AND LOWER(LTRIM(RTRIM(Patient))) LIKE @Patient";
+                        cmd.Parameters.AddWithValue("@Patient", "%" + patient.Trim().ToLower() + "%");
                     }
 
-                    if (!string.IsNullOrEmpty(drug))
+                    if (!string.IsNullOrWhiteSpace(drug))
                     {
-                        query += " AND Drug LIKE @Drug";
-                        cmd.Parameters.AddWithValue("@Drug", "%" + drug + "%");
+                        query += " AND LOWER(LTRIM(RTRIM(Drug))) LIKE @Drug";
+                        cmd.Parameters.AddWithValue("@Drug", "%" + drug.Trim().ToLower() + "%");
                     }
 
                     if (dosage.HasValue)
@@ -81,11 +84,11 @@ namespace DAL
 
                     cmd.CommandText = query;
 
-                    using (var reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            result.Add(new MedicationEntity
+                            results.Add(new MedicationEntity
                             {
                                 Id = Convert.ToInt32(reader["Id"]),
                                 Patient = reader["Patient"].ToString(),
@@ -97,15 +100,8 @@ namespace DAL
                     }
                 }
             }
-            catch (SqlException ex)
-            {
-                throw new ApplicationException("Database error in GetFiltered.", ex);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unexpected error in GetFiltered.", ex);
-            }
-            return result;
+
+            return results;
         }
 
         public bool Insert(MedicationEntity entity)

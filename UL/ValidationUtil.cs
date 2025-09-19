@@ -5,7 +5,7 @@ namespace UL
 {
     public static class ValidationUtil
     {
-        public const string PatientPattern = @"^(?=.*[A-Za-z])[A-Za-z\s'-]+$";
+        public const string PatientPattern = @"^(?=.*\p{L})[\p{L}\p{M}\s'-]+$";
         public const string DrugPattern = @"^[A-Za-z0-9]+(\s[A-Za-z0-9]+)*$";
         public const string DosagePattern = @"^\d+(\.\d{1,4})?$";
 

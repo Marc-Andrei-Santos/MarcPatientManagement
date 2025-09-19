@@ -19,6 +19,7 @@ namespace EL
         [Range(0.0001, 999.9999)]
         public decimal? Dosage { get; set; }
 
+        [Required(ErrorMessage = "Date is required.")]
         public DateTime ModifiedDate { get; set; }
     }
 }

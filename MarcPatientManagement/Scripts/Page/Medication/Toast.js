@@ -1,7 +1,11 @@
-﻿function showToast(message, type = "danger") {
+﻿function showToast(message, type = "danger")
+
+{
     var alertClass = "alert-info text-dark";
 
-    switch (type.toLowerCase()) {
+    switch (type.toLowerCase())
+
+    {
         case "success":
             alertClass = "alert-success text-center toast-success-dark";
             break;
@@ -22,18 +26,25 @@
 
     $("body").append(toast);
 
-    setTimeout(function () {
-        toast.fadeOut("slow", function () {
+    setTimeout(function ()
+
+    {
+        toast.fadeOut("slow", function ()
+        {
             $(this).remove();
         });
     }, 2600);
 }
 
-$(function () {
+$(function ()
+{
     var serverToast = $("#toastMessage");
-    if (serverToast.length) {
-        setTimeout(function () {
-            serverToast.fadeOut("slow", function () {
+    if (serverToast.length)
+    {
+        setTimeout(function ()
+        {
+            serverToast.fadeOut("slow", function ()
+            {
                 $(this).remove();
             });
         }, 2600);
