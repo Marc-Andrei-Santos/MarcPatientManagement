@@ -45,9 +45,7 @@ namespace AL.Areas.Medication.Controllers
         // GET: Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             var entity = _bll.GetById(id.Value);
-            if (entity == null) return HttpNotFound();
             return View(entity);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using EL;
 
@@ -16,7 +17,9 @@ namespace DAL
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
-                    var cmd = new SqlCommand("SELECT Id, Patient, Dosage, Drug, ModifiedDate FROM MedicationRecords", conn);
+                    var cmd = new SqlCommand("Medication_GetAll", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
                     var reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -50,39 +53,13 @@ namespace DAL
             {
                 conn.Open();
 
-                string query = @"SELECT Id, Patient, Drug, Dosage, ModifiedDate
-                         FROM MedicationRecords
-                         WHERE 1=1";
-
-                using (SqlCommand cmd = new SqlCommand())
+                using (SqlCommand cmd = new SqlCommand("Medication_GetFiltered", conn))
                 {
-                    cmd.Connection = conn;
-
-                    if (!string.IsNullOrWhiteSpace(patient))
-                    {
-                        query += " AND LOWER(LTRIM(RTRIM(Patient))) LIKE @Patient";
-                        cmd.Parameters.AddWithValue("@Patient", "%" + patient.Trim().ToLower() + "%");
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(drug))
-                    {
-                        query += " AND LOWER(LTRIM(RTRIM(Drug))) LIKE @Drug";
-                        cmd.Parameters.AddWithValue("@Drug", "%" + drug.Trim().ToLower() + "%");
-                    }
-
-                    if (dosage.HasValue)
-                    {
-                        query += " AND Dosage = @Dosage";
-                        cmd.Parameters.AddWithValue("@Dosage", dosage.Value);
-                    }
-
-                    if (modifiedDate.HasValue)
-                    {
-                        query += " AND CAST(ModifiedDate AS DATE) = @ModifiedDate";
-                        cmd.Parameters.AddWithValue("@ModifiedDate", modifiedDate.Value.Date);
-                    }
-
-                    cmd.CommandText = query;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Patient", (object)patient ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Drug", (object)drug ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Dosage", (object)dosage ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ModifiedDate", (object)modifiedDate?.Date ?? DBNull.Value);
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -110,11 +87,9 @@ namespace DAL
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
-                    var query = @"INSERT INTO MedicationRecords (Patient, Drug, Dosage, ModifiedDate)
-                                  VALUES (@Patient, @Drug, @Dosage, @ModifiedDate)";
-
-                    using (var cmd = new SqlCommand(query, conn))
+                    using (var cmd = new SqlCommand("Medication_Insert", conn))
                     {
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Patient", entity.Patient);
                         cmd.Parameters.AddWithValue("@Drug", entity.Drug);
                         cmd.Parameters.AddWithValue("@Dosage", entity.Dosage);
@@ -142,15 +117,14 @@ namespace DAL
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
-                    var cmd = new SqlCommand(@"UPDATE MedicationRecords 
-                                                SET Patient=@Patient, Dosage=@Dosage, Drug=@Drug, ModifiedDate=@ModifiedDate
-                                                WHERE Id=@Id", conn);
+                    var cmd = new SqlCommand("Medication_Update", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
 
+                    cmd.Parameters.AddWithValue("@Id", entity.Id);
                     cmd.Parameters.AddWithValue("@Patient", entity.Patient);
                     cmd.Parameters.AddWithValue("@Dosage", entity.Dosage);
                     cmd.Parameters.AddWithValue("@Drug", entity.Drug);
                     cmd.Parameters.AddWithValue("@ModifiedDate", entity.ModifiedDate);
-                    cmd.Parameters.AddWithValue("@Id", entity.Id);
 
                     return cmd.ExecuteNonQuery() > 0;
                 }
@@ -172,7 +146,8 @@ namespace DAL
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
-                    var cmd = new SqlCommand("DELETE FROM MedicationRecords WHERE Id=@Id", conn);
+                    var cmd = new SqlCommand("Medication_Delete", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Id", id);
 
                     return cmd.ExecuteNonQuery() > 0;
@@ -196,7 +171,8 @@ namespace DAL
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
-                    var cmd = new SqlCommand("SELECT Id, Patient, Dosage, Drug, ModifiedDate FROM MedicationRecords WHERE Id=@Id", conn);
+                    var cmd = new SqlCommand("Medication_GetById", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Id", id);
 
                     using (var reader = cmd.ExecuteReader())
