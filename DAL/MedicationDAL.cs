@@ -17,7 +17,7 @@ namespace DAL
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
-                    var cmd = new SqlCommand("Medication_GetAll", conn);
+                    var cmd = new SqlCommand("spMedicationGet", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     var reader = cmd.ExecuteReader();
@@ -51,7 +51,7 @@ namespace DAL
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
-                    using (var cmd = new SqlCommand("Medication_Insert", conn))
+                    using (var cmd = new SqlCommand("spMedicationAdd", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Patient", entity.Patient);
@@ -81,14 +81,13 @@ namespace DAL
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
-                    var cmd = new SqlCommand("Medication_Update", conn);
+                    var cmd = new SqlCommand("spMedicationEdit", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@Id", entity.Id);
                     cmd.Parameters.AddWithValue("@Patient", entity.Patient);
                     cmd.Parameters.AddWithValue("@Dosage", entity.Dosage);
                     cmd.Parameters.AddWithValue("@Drug", entity.Drug);
-                    cmd.Parameters.AddWithValue("@ModifiedDate", entity.ModifiedDate);
 
                     return cmd.ExecuteNonQuery() > 0;
                 }
@@ -110,7 +109,7 @@ namespace DAL
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
-                    var cmd = new SqlCommand("Medication_Delete", conn);
+                    var cmd = new SqlCommand("spMedicationDelete", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Id", id);
 
@@ -135,7 +134,7 @@ namespace DAL
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     conn.Open();
-                    var cmd = new SqlCommand("Medication_GetById", conn);
+                    var cmd = new SqlCommand("spMedicationGetById", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Id", id);
 

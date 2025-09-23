@@ -4,26 +4,14 @@
     ViewBag.Title = "Patient Details";
 }
 
-<h2>Patient Details</h2>
-
-<div class="d-flex justify-content-end mb-3">
-    <a href="@Url.Action("Create", "Medication", new { area = "Medication" })"
-       class="btn btn-success">
-        <i class="fas fa-plus me-1"></i> Add New Record
-    </a>
-</div>
+<h2>PatientDetails</h2>
 
 <div id="filterWrapper">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <div>
-            Show
-            <select id="pageSizeSelect" class="form-select d-inline-block w-auto mx-1">
-                <option value="10" @(ViewBag.PageSize == 10 ? "selected" : "")>10</option>
-                <option value="20" @(ViewBag.PageSize == 20 ? "selected" : "")>20</option>
-                <option value="30" @(ViewBag.PageSize == 30 ? "selected" : "")>30</option>
-            </select>
-            entries
-        </div>
+    <div class="d-flex justify-content-end mb-3">
+        <a href="@Url.Action("Create", "Medication", new { area = "Medication" })"
+           class="btn btn-success">
+            <i class="fas fa-plus me-1"></i> Add New Record
+        </a>
     </div>
 
     <div class="card shadow-sm rounded">
@@ -31,32 +19,32 @@
 
             <table class="table custom-table mb-0">
                 <thead>
+      
                     <tr class="filter-row">
-                        <th>
-                            <input type="text" name="patientFilter" value="@ViewBag.PatientFilter" placeholder="Patient" class="form-control filter-input" />
+                        <th class="text-center align-middle">
+                            <span class="fw-semibold" style="margin-right: 8px;">Search by:</span>
                         </th>
                         <th>
-                            <input type="text" name="drugFilter" value="@ViewBag.DrugFilter" placeholder="Drug" class="form-control filter-input" />
+                            <input type="date" name="modifiedDateFilter" value="@ViewBag.ModifiedDateFilter" class="form-control filter-input" />
                         </th>
                         <th>
                             <input type="text" name="dosageFilter" value="@ViewBag.DosageFilter" placeholder="Dosage" class="form-control filter-input" />
                         </th>
                         <th>
-                            <input type="date" name="modifiedDateFilter" value="@ViewBag.ModifiedDateFilter" class="form-control filter-input" />
+                            <input type="text" name="drugFilter" value="@ViewBag.DrugFilter" placeholder="Drug" class="form-control filter-input" />
                         </th>
-                        <th class="text-center">
-                            <div class="d-flex justify-content-center align-items-center mb-3 buttons-wrapper">
-                                <button id="filterBtn" class="btn btn-success me-2">Filter</button>
-                                <button id="resetBtn" class="btn btn-secondary">Reset</button>
-                            </div>
+                        <th class="d-flex align-items-center">
+                            <input type="text" name="patientFilter" value="@ViewBag.PatientFilter" placeholder="Patient" class="form-control filter-input me-2" />
+                            <button id="resetBtn" class="btn btn-secondary">Reset</button>
                         </th>
                     </tr>
+
                     <tr>
-                        <th>Patient</th>
-                        <th>Drug</th>
+                        <th></th>
+                        <th>Date</th>
                         <th>Dosage</th>
-                        <th>Modified Date</th>
-                        <th class="text-center">Actions</th>
+                        <th>Drug</th>
+                        <th>Patient</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,21 +53,21 @@
                         foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.Patient</td>
-                                <td>@item.Drug</td>
-                                <td>@(item.Dosage?.ToString("F2") ?? "0.00")</td>
-                                <td>@item.ModifiedDate.ToString("yyyy-MM-dd")</td>
                                 <td class="text-center">
                                     <a href="@Url.Action("Edit", "Medication", new { area = "Medication", id = item.Id })"
                                        class="btn btn-outline-primary btn-sm me-1" title="Edit">
-                                        <i class="fas fa-edit"></i>
+                                        Edit
                                     </a>
                                     <button type="button"
                                             class="btn btn-outline-danger btn-sm delete-btn"
                                             data-id="@item.Id" title="Delete">
-                                        <i class="fas fa-trash"></i>
+                                        Delete
                                     </button>
                                 </td>
+                                <td>@item.ModifiedDate.ToString("yyyy-MM-dd")</td>
+                                <td>@(item.Dosage?.ToString("F2") ?? "0.00")</td>
+                                <td>@item.Drug</td>
+                                <td>@item.Patient</td>
                             </tr>
                         }
                     }
@@ -93,12 +81,6 @@
             </table>
 
         </div>
-    </div>
-
-    <div class="d-flex justify-content-center mt-3">
-        <nav aria-label="Page navigation">
-            <ul id="pagination" class="pagination pagination-sm rounded shadow-sm"></ul>
-        </nav>
     </div>
 
     <div id="showingInfo" class="text-start text-muted fw-semibold small mt-2" style="font-size: 0.95rem;">

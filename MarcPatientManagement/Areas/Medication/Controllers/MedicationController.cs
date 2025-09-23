@@ -7,6 +7,8 @@ using BLL;
 using EL;
 using UL;
 
+// ... existing using statements ...
+
 namespace AL.Areas.Medication.Controllers
 {
     public class MedicationController : Controller
@@ -24,9 +26,17 @@ namespace AL.Areas.Medication.Controllers
 
             return View(allData.Skip((page - 1) * pageSize).Take(pageSize).ToList());
         }
-
         // GET: Create
-        public ActionResult Create() => View(new MedicationEntity { ModifiedDate = DateTime.Now });
+        public ActionResult Create()
+        {
+        
+            if (Request.QueryString.Count > 0)
+            {
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+            }
+
+            return View(new MedicationEntity { ModifiedDate = DateTime.Now });
+        }
 
         // POST: Create
         [HttpPost]
@@ -40,21 +50,38 @@ namespace AL.Areas.Medication.Controllers
         // GET: Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!id.HasValue)
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+
             var entity = _bll.GetById(id.Value);
+            if (entity == null)
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+
             return View(entity);
         }
 
         // POST: Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(MedicationEntity entity) => HandleSubmit(() => _bll.Update(entity), entity, "warning");
+        public ActionResult Edit(MedicationEntity entity)
+        {
+            // Extra validation: check if the entity exists before updating
+            var existing = _bll.GetById(entity.Id);
+            if (existing == null)
+                return RedirectToAction("NotFound", "Error", new { area = "" });
 
+            return HandleSubmit(() => _bll.Update(entity), entity, "warning");
+        }
 
         // POST: Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var existing = _bll.GetById(id);
+            if (existing == null)
+                return RedirectToAction("NotFound", "Error", new { area = "" });
+
             var result = _bll.Delete(id);
             TempData["ToastMessage"] = string.Join(", ", result.MessageList);
             TempData["ToastType"] = "danger";
@@ -62,7 +89,7 @@ namespace AL.Areas.Medication.Controllers
         }
 
         // POST: Check Duplicates
-        public JsonResult CheckDuplicate(string patient, string drug, DateTime date, decimal? dosage, int? id = null)
+        public JsonResult CheckDuplicate(string patient, string drug, decimal? dosage, int? id = null)
         {
             var allRecords = _bll.GetAll();
             if (id.HasValue)
@@ -74,8 +101,7 @@ namespace AL.Areas.Medication.Controllers
                 if (currentRecord != null &&
                     currentRecord.Patient == patient &&
                     currentRecord.Drug == drug &&
-                    currentRecord.Dosage == dosage &&
-                    currentRecord.ModifiedDate.Date == date.Date)
+                    currentRecord.Dosage == dosage)
                 {
                     return Json(new { isDuplicate = true, message = MessageUtil.NoChanges, isValid = false });
                 }
@@ -84,23 +110,20 @@ namespace AL.Areas.Medication.Controllers
             if (allRecords.Any(x =>
                     x.Patient == patient &&
                     x.Drug == drug &&
-                    x.Dosage == dosage &&
-                    x.ModifiedDate.Date == date.Date))
+                    x.Dosage == dosage))
             {
                 return Json(new { isDuplicate = true, message = MessageUtil.RecordAlreadyExists, isValid = false });
             }
 
             if (allRecords.Any(x =>
                     x.Patient == patient &&
-                    x.Drug == drug &&
-                    x.ModifiedDate.Date == date.Date))
+                    x.Drug == drug))
             {
                 return Json(new { isDuplicate = true, message = MessageUtil.DuplicateRecord, isValid = false });
             }
 
             return Json(new { isDuplicate = false, isValid = true });
         }
-
 
         // Helper Handle Submit for Create and Edit 
         private ActionResult HandleSubmit(Func<MedicationEntity> saveAction, MedicationEntity entity, string successType)

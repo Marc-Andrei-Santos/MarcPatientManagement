@@ -44,8 +44,7 @@ namespace BLL
                 var currentRecord = GetById(entity.Id);
                 if (currentRecord.Patient == entity.Patient &&
                     currentRecord.Drug == entity.Drug &&
-                    currentRecord.Dosage == entity.Dosage &&
-                    currentRecord.ModifiedDate.Date == entity.ModifiedDate.Date)
+                    currentRecord.Dosage == entity.Dosage)
                 {
                     result.IsSuccess = false;
                     result.MessageList.Add(MessageUtil.NoChanges);
@@ -105,8 +104,6 @@ namespace BLL
                 result.IsSuccess = false;
                 return result;
             }
-
-            // Removed all GetFiltered validation logic
 
             return null;
         }

@@ -1,7 +1,27 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
     ViewBag.Title = "Page Not Found";
 }
-<h1>404 - Page Not Found</h1>
-<p>The page you are looking for does not exist.</p>
-<a href="@Url.Action("Index", "Home")">Return to Home</a>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Marc's Patient Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="~/Content/CSS/bootstrap/bootstrap.css" rel="stylesheet" />
+    <!-- Google Fonts for stylish text -->
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <link href="~/Content/CSS/site/Site.css" rel="stylesheet" />
+</head>
+<body class="notfound-container">
+    <img src="~/Content/images/confuse.jpg" alt="Lost" class="notfound-image" />
+    <div class="notfound-title">404 - Page Not Found</div>
+    <div class="notfound-label">Looks like you're lost</div>
+    <div class="notfound-desc">The page you are looking for does not exist or has been moved.</div>
+    <a href="@Url.Action("Index", "Medication", new { area = "Medication" })" class="btn-home">
+        Return to Main
+    </a>
+</body>
+</html>

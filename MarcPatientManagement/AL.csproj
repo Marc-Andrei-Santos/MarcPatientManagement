@@ -120,7 +120,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Areas\Medication\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Medication\Controllers\MedicationController.cs" />
     <Compile Include="Areas\Medication\MedicationAreaRegistration.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -147,6 +146,7 @@
     <Content Include="Content\CSS\bootstrap\bootstrap.rtl.css" />
     <Content Include="Content\CSS\bootstrap\bootstrap.rtl.min.css" />
     <Content Include="Content\CSS\site\Site.css" />
+    <Content Include="Content\images\confuse.jpg" />
     <Content Include="Content\images\h2.png" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
@@ -177,7 +177,6 @@
     <Content Include="Scripts\lib\bootstrap.esm.min.js" />
     <Content Include="Scripts\lib\bootstrap.js" />
     <Content Include="Scripts\lib\bootstrap.min.js" />
-    <Content Include="Areas\Medication\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Medication\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Medication\Views\Shared\_Layout.cshtml" />
     <None Include="Scripts\lib\jquery-3.7.0.intellisense.js" />

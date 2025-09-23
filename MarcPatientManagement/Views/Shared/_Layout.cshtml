@@ -32,12 +32,6 @@
 
         <div class="divider"></div>
 
-        <!-- Dashboard -->
-        <a href="@Url.Action("Index", "Dashboard", new { area = "Medication" })"
-           class="nav-link @(ViewBag.ActiveTab == "Dashboard" ? "active" : "")">
-            <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
-        </a>
-
         <!-- Medication -->
         <a href="@Url.Action("Index", "Medication", new { area = "Medication" })"
            class="nav-link @(ViewBag.ActiveTab == "Medication" ? "active" : "")">
@@ -67,21 +61,21 @@
 
     <script>
     window.Messages = {
+        DuplicateRecord: '@UL.MessageUtil.DuplicateRecord',
+        RecordAlreadyExists: '@UL.MessageUtil.RecordAlreadyExists',
+        NoChanges: '@UL.MessageUtil.NoChanges',
         InvalidPatient: '@UL.MessageUtil.InvalidPatient',
         InvalidDrug: '@UL.MessageUtil.InvalidDrug',
         InvalidDosage: '@UL.MessageUtil.InvalidDosage',
-        DuplicateRecord: '@UL.MessageUtil.DuplicateRecord',
-        RecordAlreadyExists: '@UL.MessageUtil.RecordAlreadyExists',
-        NoChanges: '@UL.MessageUtil.NoChanges'
+        NegativeDosage: '@UL.MessageUtil.NegativeDosage'
     };
     </script>
 
     <!-- Global JS Scripts -->
+    <script src="~/Scripts/Page/Medication/Toast.js"></script>
     <script src="~/Scripts/Page/Medication/Create.js"></script>
     <script src="~/Scripts/Page/Medication/Edit.js"></script>
     <script src="~/Scripts/Page/Medication/Delete.js"></script>
-    <script src="~/Scripts/Page/Medication/Toast.js"></script>
-    <script src="~/Scripts/Pages/Medication/Filter.js"></script>
 
     @RenderSection("scripts", required: false)
 
