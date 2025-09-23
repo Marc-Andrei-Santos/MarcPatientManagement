@@ -13,9 +13,6 @@ namespace BLL
 
         public List<MedicationEntity> GetAll() => _dal.GetAll();
 
-        public List<MedicationEntity> GetFiltered(string patient, string drug, decimal? dosage, DateTime? modifiedDate)
-            => _dal.GetFiltered(patient, drug, dosage, modifiedDate);
-
         public MedicationEntity GetById(int id) => _dal.GetById(id);
 
         public MedicationEntity Insert(MedicationEntity entity)
@@ -109,27 +106,7 @@ namespace BLL
                 return result;
             }
 
-            var existing = GetFiltered(entity.Patient, entity.Drug, null, entity.ModifiedDate.Date)
-                           .Where(x => !isUpdate || x.Id != entity.Id);
-
-            if (existing.Any(x => x.Patient == entity.Patient &&
-                                  x.Drug == entity.Drug &&
-                                  x.Dosage == entity.Dosage &&
-                                  x.ModifiedDate.Date == entity.ModifiedDate.Date))
-            {
-                result.IsSuccess = false;
-                result.MessageList.Add(MessageUtil.RecordAlreadyExists);
-                return result;
-            }
-
-            if (existing.Any(x => x.Patient == entity.Patient &&
-                                  x.Drug == entity.Drug &&
-                                  x.ModifiedDate.Date == entity.ModifiedDate.Date))
-            {
-                result.IsSuccess = false;
-                result.MessageList.Add(MessageUtil.DuplicateRecord);
-                return result;
-            }
+            // Removed all GetFiltered validation logic
 
             return null;
         }

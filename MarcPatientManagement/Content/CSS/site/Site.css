@@ -1,4 +1,23 @@
-﻿
+﻿.buttons-wrapper {
+    margin-top: 15px; 
+}
+
+#filterBtn,
+#resetBtn {
+    padding: 6px 14px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+#resetBtn {
+    visibility: hidden;
+}
+
+    #resetBtn.show {
+        visibility: visible;
+    }
+
+
 .body-content {
     margin-top: 15px;
     padding-left: 15px;
@@ -193,3 +212,26 @@ body {
         position: relative;
         left: -6px; 
     }
+
+.logo-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    color: #ffffff;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    font-size: 0.95rem;
+    line-height: 1.2;
+}
+
+.logo-text .final {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.logo-text .assessment {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}

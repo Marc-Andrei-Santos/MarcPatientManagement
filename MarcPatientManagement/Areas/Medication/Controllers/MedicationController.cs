@@ -13,18 +13,13 @@ namespace AL.Areas.Medication.Controllers
     {
         private readonly MedicationBLL _bll = new MedicationBLL();
 
-        public ActionResult Index(string patientFilter, string drugFilter, decimal? dosageFilter, DateTime? modifiedDateFilter,
-                                  int page = 1, int pageSize = 10)
+        public ActionResult Index(int page = 1, int pageSize = 10)
         {
             ViewBag.ActiveTab = "Medication";
-            ViewBag.PatientFilter = patientFilter;
-            ViewBag.DrugFilter = drugFilter;
-            ViewBag.DosageFilter = dosageFilter;
-            ViewBag.ModifiedDateFilter = modifiedDateFilter?.ToString("yyyy-MM-dd");
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
 
-            var allData = _bll.GetFiltered(patientFilter, drugFilter, dosageFilter, modifiedDateFilter);
+            var allData = _bll.GetAll();
             ViewBag.TotalRecords = allData.Count();
 
             return View(allData.Skip((page - 1) * pageSize).Take(pageSize).ToList());

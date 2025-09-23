@@ -45,42 +45,6 @@ namespace DAL
             return list;
         }
 
-        public List<MedicationEntity> GetFiltered(string patient, string drug, decimal? dosage, DateTime? modifiedDate)
-        {
-            var results = new List<MedicationEntity>();
-
-            using (var conn = GetConnection())
-            {
-                conn.Open();
-
-                using (SqlCommand cmd = new SqlCommand("Medication_GetFiltered", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Patient", (object)patient ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@Drug", (object)drug ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@Dosage", (object)dosage ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@ModifiedDate", (object)modifiedDate?.Date ?? DBNull.Value);
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            results.Add(new MedicationEntity
-                            {
-                                Id = Convert.ToInt32(reader["Id"]),
-                                Patient = reader["Patient"].ToString(),
-                                Drug = reader["Drug"].ToString(),
-                                Dosage = Convert.ToDecimal(reader["Dosage"]),
-                                ModifiedDate = Convert.ToDateTime(reader["ModifiedDate"])
-                            });
-                        }
-                    }
-                }
-            }
-
-            return results;
-        }
-
         public bool Insert(MedicationEntity entity)
         {
             try

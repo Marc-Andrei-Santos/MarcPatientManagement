@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
 
     <!-- Site CSS -->
-    <link href="@Url.Content("~/Content/CSS/site/site.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/CSS/site/Site.css")" rel="stylesheet" />
     @RenderSection("Styles", required: false)
 
     <!-- FontAwesome -->
@@ -22,7 +22,11 @@
 
         <div class="logo" style="display: flex; align-items: center; gap: 10px; padding-left: 5px;">
             <img src="~/Content/Images/h2.png" alt="Logo" style="height:50px; width:auto;" />
-            <span class="logo-text">MARC PMS</span>
+            <div class="logo-text">
+                <span class="final">FINAL</span>
+                <span class="assessment">ASSESSMENT</span>
+            </div>
+
         </div>
 
 
@@ -77,6 +81,7 @@
     <script src="~/Scripts/Page/Medication/Edit.js"></script>
     <script src="~/Scripts/Page/Medication/Delete.js"></script>
     <script src="~/Scripts/Page/Medication/Toast.js"></script>
+    <script src="~/Scripts/Pages/Medication/Filter.js"></script>
 
     @RenderSection("scripts", required: false)
 

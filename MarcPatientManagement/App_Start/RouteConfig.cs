@@ -12,11 +12,18 @@ namespace AL
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Medication", action = "Index", id = UrlParameter.Optional }
-            ).DataTokens["area"] = "Medication"; 
+            ).DataTokens["area"] = "Medication";
+
+            routes.MapRoute(
+                name: "NotFound",
+                url: "{*url}",
+                defaults: new { controller = "Error", action = "NotFound" }
+            );
         }
     }
 }

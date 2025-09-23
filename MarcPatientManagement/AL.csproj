@@ -123,6 +123,7 @@
     <Compile Include="Areas\Medication\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Medication\Controllers\MedicationController.cs" />
     <Compile Include="Areas\Medication\MedicationAreaRegistration.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -147,6 +148,7 @@
     <Content Include="Content\CSS\bootstrap\bootstrap.rtl.min.css" />
     <Content Include="Content\CSS\site\Site.css" />
     <Content Include="Content\images\h2.png" />
+    <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Medication\Views\web.config" />
@@ -176,6 +178,8 @@
     <Content Include="Scripts\lib\bootstrap.js" />
     <Content Include="Scripts\lib\bootstrap.min.js" />
     <Content Include="Areas\Medication\Views\Dashboard\Index.cshtml" />
+    <Content Include="Areas\Medication\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Medication\Views\Shared\_Layout.cshtml" />
     <None Include="Scripts\lib\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\lib\jquery-3.7.0.js" />
     <Content Include="Scripts\lib\jquery-3.7.0.min.js" />
@@ -191,6 +195,7 @@
     <Content Include="Scripts\Page\Medication\Create.js" />
     <Content Include="Scripts\Page\Medication\Delete.js" />
     <Content Include="Scripts\Page\Medication\Edit.js" />
+    <Content Include="Scripts\Page\Medication\Filter.js" />
     <Content Include="Scripts\Page\Medication\Toast.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -211,6 +216,7 @@
     <Content Include="Scripts\lib\bootstrap.min.js.map" />
     <Content Include="Scripts\lib\jquery-3.7.0.min.map" />
     <Content Include="Scripts\lib\jquery-3.7.0.slim.min.map" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
