@@ -73,7 +73,6 @@ namespace DAL
                 throw new ApplicationException("Unexpected error in Insert.", ex);
             }
         }
-
         public bool Update(MedicationEntity entity)
         {
             try
@@ -94,7 +93,8 @@ namespace DAL
             }
             catch (SqlException ex)
             {
-                throw new ApplicationException("Database error in Update.", ex);
+
+                throw new ApplicationException(ex.Message, ex);
             }
             catch (Exception ex)
             {

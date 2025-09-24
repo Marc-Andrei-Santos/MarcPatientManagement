@@ -7,25 +7,20 @@ using BLL;
 using EL;
 using UL;
 
-// ... existing using statements ...
-
 namespace AL.Areas.Medication.Controllers
 {
     public class MedicationController : Controller
     {
         private readonly MedicationBLL _bll = new MedicationBLL();
 
-        public ActionResult Index(int page = 1, int pageSize = 10)
+        public ActionResult Index()
         {
             ViewBag.ActiveTab = "Medication";
-            ViewBag.Page = page;
-            ViewBag.PageSize = pageSize;
 
             var allData = _bll.GetAll();
-            ViewBag.TotalRecords = allData.Count();
-
-            return View(allData.Skip((page - 1) * pageSize).Take(pageSize).ToList());
+            return View(allData.ToList());
         }
+
         // GET: Create
         public ActionResult Create()
         {
@@ -65,7 +60,6 @@ namespace AL.Areas.Medication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(MedicationEntity entity)
         {
-            // Extra validation: check if the entity exists before updating
             var existing = _bll.GetById(entity.Id);
             if (existing == null)
                 return RedirectToAction("NotFound", "Error", new { area = "" });

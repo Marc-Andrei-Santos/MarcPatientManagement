@@ -20,19 +20,20 @@ namespace BLL
             var result = new MedicationEntity();
             try
             {
-                var validation = ValidateEntity(entity);
-                if (validation != null) return validation;
-
                 var success = _dal.Insert(entity);
                 result.IsSuccess = success;
                 result.MessageList.Add(success ? MessageUtil.RecordCreated : MessageUtil.SaveFailed);
+            }
+            catch (ApplicationException ex)
+            {
+                result.IsSuccess = false;
+                result.MessageList.Add(ex.Message); 
             }
             catch (Exception ex)
             {
                 result.IsSuccess = false;
                 result.MessageList.Add("Unexpected error while saving: " + ex.Message);
             }
-
             return result;
         }
 
@@ -41,6 +42,7 @@ namespace BLL
             var result = new MedicationEntity();
             try
             {
+
                 var currentRecord = GetById(entity.Id);
                 if (currentRecord.Patient == entity.Patient &&
                     currentRecord.Drug == entity.Drug &&
@@ -58,12 +60,17 @@ namespace BLL
                 result.IsSuccess = success;
                 result.MessageList.Add(success ? MessageUtil.RecordUpdated : MessageUtil.UpdateFailed);
             }
+
+            catch (ApplicationException ex)
+            {
+                result.IsSuccess = false;
+                result.MessageList.Add(ex.Message); 
+            }
             catch (Exception ex)
             {
                 result.IsSuccess = false;
                 result.MessageList.Add("Unexpected error while updating: " + ex.Message);
             }
-
             return result;
         }
 
