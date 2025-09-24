@@ -6,49 +6,29 @@
 }
 
 <h2>Edit Record</h2>
-
 <hr />
 
-@using (Html.BeginForm("Edit", "Medication", new { area = "Medication" }, FormMethod.Post, new { id = "editForm", novalidate = "novalidate" }))
+@using (Html.BeginForm("Edit", "Medication", new { area = "Medication" }, FormMethod.Post, new { id = "editForm" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Id, new { id = "Id" })
 
     <div class="mb-3">
         @Html.LabelFor(m => m.Patient)
-        @Html.TextBoxFor(m => m.Patient, new
-        {
-            @class = "form-control",
-            placeholder = "Enter patient name",
-            title = "Patient name is required"
-        })
-        @Html.ValidationMessageFor(m => m.Patient, "", new { @class = "text-danger" })
+        @Html.TextBoxFor(m => m.Patient, new { @class = "form-control", placeholder = "Enter patient name", id = "Patient" })
+        @Html.ValidationMessageFor(m => m.Patient, "", new { @class = "text-danger", id = "PatientError" })
     </div>
 
     <div class="mb-3">
         @Html.LabelFor(m => m.Drug)
-        @Html.TextBoxFor(m => m.Drug, new
-        {
-            @class = "form-control",
-            placeholder = "Enter drug name",
-            title = "Drug name is required"
-        })
-        @Html.ValidationMessageFor(m => m.Drug, "", new { @class = "text-danger" })
+        @Html.TextBoxFor(m => m.Drug, new { @class = "form-control", placeholder = "Enter drug name", id = "Drug" })
+        @Html.ValidationMessageFor(m => m.Drug, "", new { @class = "text-danger", id = "DrugError" })
     </div>
 
     <div class="mb-3">
         @Html.LabelFor(m => m.Dosage)
-        @Html.TextBoxFor(m => m.Dosage, new
-        {
-            @class = "form-control",
-            placeholder = "Enter dosage",
-            step = "0.0001",
-            min = "0.01",
-            max = "999.9999",
-            oninput = "this.value=this.value.replace(/[^0-9.]/g,'')",
-            title = "Dosage must be a positive number with up to four decimal places, between 0.01 and 999.9999."
-        })
-        @Html.ValidationMessageFor(m => m.Dosage, "", new { @class = "text-danger" })
+        @Html.TextBoxFor(m => m.Dosage, new { @class = "form-control", placeholder = "Enter dosage", step = "0.0001", min = "0.01", max = "999.9999", oninput = "this.value=this.value.replace(/[^0-9.]/g,'')", id = "Dosage" })
+        @Html.ValidationMessageFor(m => m.Dosage, "", new { @class = "text-danger", id = "DosageError" })
     </div>
 
     <hr />
@@ -69,12 +49,10 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                Are you sure you want to update this record?
-            </div>
+            <div class="modal-body">Are you sure you want to update this record?</div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelUpdate">Cancel</button>
-                <button type="button" id="confirmUpdate" class="btn btn-success">Yes</button>
+                <button type="button" class="btn btn-success" id="confirmUpdate">Yes</button>
             </div>
         </div>
     </div>
@@ -84,4 +62,5 @@
     <script>
         window.checkDuplicateUrl = '@Url.Action("CheckDuplicate", "Medication", new { area = "Medication" })';
     </script>
+    <script src="~/Scripts/Page/Medication/Edit.js"></script>
 }

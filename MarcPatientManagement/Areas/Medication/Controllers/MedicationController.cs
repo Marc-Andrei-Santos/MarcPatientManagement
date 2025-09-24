@@ -24,10 +24,9 @@ namespace AL.Areas.Medication.Controllers
         // GET: Create
         public ActionResult Create()
         {
-        
-            if (Request.QueryString.Count > 0)
+            if (Request.Url.Segments.Length > 4) 
             {
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return RedirectToAction("Index");
             }
 
             return View(new MedicationEntity { ModifiedDate = DateTime.Now });
@@ -42,20 +41,24 @@ namespace AL.Areas.Medication.Controllers
             return HandleSubmit(() => _bll.Insert(entity), entity, "success");
         }
 
+
         // GET: Edit/5
         public ActionResult Edit(int? id)
         {
-            if (!id.HasValue)
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+            if (!id.HasValue || Request.Url.Segments.Length > 5)
+            {
+                return RedirectToAction("Index");
+            }
 
             var entity = _bll.GetById(id.Value);
             if (entity == null)
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return RedirectToAction("Index");
 
             return View(entity);
         }
 
-        // POST: Edit/5
+
+        // POST: Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(MedicationEntity entity)
@@ -66,6 +69,7 @@ namespace AL.Areas.Medication.Controllers
 
             return HandleSubmit(() => _bll.Update(entity), entity, "warning");
         }
+
 
         // POST: Delete/5
         [HttpPost]
@@ -119,7 +123,8 @@ namespace AL.Areas.Medication.Controllers
             return Json(new { isDuplicate = false, isValid = true });
         }
 
-        // Helper Handle Submit for Create and Edit 
+
+        // Helper Submit for Create and Edit 
         private ActionResult HandleSubmit(Func<MedicationEntity> saveAction, MedicationEntity entity, string successType)
         {
             if (!ModelState.IsValid)

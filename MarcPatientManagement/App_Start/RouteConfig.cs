@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace AL
@@ -13,12 +9,17 @@ namespace AL
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // Enable attribute routing
+            routes.MapMvcAttributeRoutes();
+
+            // Default route
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Medication", action = "Index", id = UrlParameter.Optional }
             ).DataTokens["area"] = "Medication";
 
+            // Catch-all for 404
             routes.MapRoute(
                 name: "NotFound",
                 url: "{*url}",

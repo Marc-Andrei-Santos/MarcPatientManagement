@@ -177,8 +177,6 @@
     <Content Include="Scripts\lib\bootstrap.esm.min.js" />
     <Content Include="Scripts\lib\bootstrap.js" />
     <Content Include="Scripts\lib\bootstrap.min.js" />
-    <Content Include="Areas\Medication\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Medication\Views\Shared\_Layout.cshtml" />
     <None Include="Scripts\lib\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\lib\jquery-3.7.0.js" />
     <Content Include="Scripts\lib\jquery-3.7.0.min.js" />

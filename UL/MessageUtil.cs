@@ -13,9 +13,10 @@
         public const string DeleteFailed = "Failed to delete record.";
 
         // Validation Messages
+        public const string AllFieldsRequired = "All fields are required.";
         public const string DuplicateRecord = "You cannot add same drug to a patient.";
         public const string RecordAlreadyExists = "Record already exists.";
-        public const string NoChanges = "It seems nothing was changed. Click cancel to return.";
+        public const string NoChanges = "It seems nothing was changed.";
 
         // Input Validation Messages
         public const string InvalidPatient = "Patient name is invalid. It must only contain letters, spaces, hyphen (-), or apostrophe (') and cannot start or end with a space.";
