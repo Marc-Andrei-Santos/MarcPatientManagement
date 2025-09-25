@@ -8,6 +8,8 @@ namespace DAL
 {
     public class MedicationDAL : DbConnectionDAL
     {
+
+        // Get All
         public List<MedicationEntity> GetAll()
         {
             var list = new List<MedicationEntity>();
@@ -45,6 +47,8 @@ namespace DAL
             return list;
         }
 
+
+        // Insert
         public bool Insert(MedicationEntity entity)
         {
             try
@@ -60,72 +64,81 @@ namespace DAL
                         cmd.Parameters.AddWithValue("@ModifiedDate", entity.ModifiedDate);
 
                         conn.Open();
-                        return cmd.ExecuteNonQuery() > 0;
+                        cmd.ExecuteNonQuery();
+                        return true; 
                     }
                 }
             }
             catch (SqlException ex)
             {
-                throw new ApplicationException("Database error in Insert.", ex);
+                throw new ApplicationException(ex.Message, ex);
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Unexpected error in Insert.", ex);
+                throw new ApplicationException("An unexpected error occurred during insertion.", ex);
             }
         }
+
+        // Update
         public bool Update(MedicationEntity entity)
         {
             try
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
-                    conn.Open();
-                    var cmd = new SqlCommand("spMedicationEdit", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (var cmd = new SqlCommand("spMedicationEdit", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Id", entity.Id);
+                        cmd.Parameters.AddWithValue("@Patient", entity.Patient);
+                        cmd.Parameters.AddWithValue("@Drug", entity.Drug);
+                        cmd.Parameters.AddWithValue("@Dosage", entity.Dosage);
 
-                    cmd.Parameters.AddWithValue("@Id", entity.Id);
-                    cmd.Parameters.AddWithValue("@Patient", entity.Patient);
-                    cmd.Parameters.AddWithValue("@Dosage", entity.Dosage);
-                    cmd.Parameters.AddWithValue("@Drug", entity.Drug);
-
-                    return cmd.ExecuteNonQuery() > 0;
+                        conn.Open();
+                        cmd.ExecuteNonQuery(); 
+                        return true; 
+                    }
                 }
             }
             catch (SqlException ex)
             {
-
                 throw new ApplicationException(ex.Message, ex);
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Unexpected error in Update.", ex);
+                throw new ApplicationException("An unexpected error occurred during update.", ex);
             }
         }
 
+        // Delete
         public bool Delete(int id)
         {
             try
             {
                 using (var conn = new SqlConnection(_connectionString))
                 {
-                    conn.Open();
-                    var cmd = new SqlCommand("spMedicationDelete", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Id", id);
+                    using (var cmd = new SqlCommand("spMedicationDelete", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Id", id);
 
-                    return cmd.ExecuteNonQuery() > 0;
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        return true; 
+                    }
                 }
             }
             catch (SqlException ex)
             {
-                throw new ApplicationException("Database error in Delete.", ex);
+                throw new ApplicationException(ex.Message, ex);
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Unexpected error in Delete.", ex);
+                throw new ApplicationException("An unexpected error occurred during deletion.", ex);
             }
         }
 
+        // Get by Id
         public MedicationEntity GetById(int id)
         {
             MedicationEntity entity = null;

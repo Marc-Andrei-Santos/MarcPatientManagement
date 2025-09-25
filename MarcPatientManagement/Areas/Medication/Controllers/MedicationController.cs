@@ -93,9 +93,28 @@ namespace AL.Areas.Medication.Controllers
         public JsonResult CheckDuplicate(string patient, string drug, decimal? dosage, int? id = null)
         {
             var allRecords = _bll.GetAll();
+
             if (id.HasValue)
                 allRecords = allRecords.Where(x => x.Id != id.Value).ToList();
 
+            // (Patient + Drug + Dosage)
+            if (allRecords.Any(x =>
+                    x.Patient == patient &&
+                    x.Drug == drug &&
+                    x.Dosage == dosage))
+            {
+                return Json(new { isDuplicate = true, message = MessageUtil.RecordAlreadyExists, isValid = false });
+            }
+
+            // (Patient + Drug)
+            if (allRecords.Any(x =>
+                    x.Patient == patient &&
+                    x.Drug == drug))
+            {
+                return Json(new { isDuplicate = true, message = MessageUtil.DuplicateRecord, isValid = false });
+            }
+
+            // No changes made (for Edit)
             if (id.HasValue)
             {
                 var currentRecord = _bll.GetById(id.Value);
@@ -108,37 +127,30 @@ namespace AL.Areas.Medication.Controllers
                 }
             }
 
-            if (allRecords.Any(x =>
-                    x.Patient == patient &&
-                    x.Drug == drug &&
-                    x.Dosage == dosage))
-            {
-                return Json(new { isDuplicate = true, message = MessageUtil.RecordAlreadyExists, isValid = false });
-            }
-
-            if (allRecords.Any(x =>
-                    x.Patient == patient &&
-                    x.Drug == drug))
-            {
-                return Json(new { isDuplicate = true, message = MessageUtil.DuplicateRecord, isValid = false });
-            }
-
             return Json(new { isDuplicate = false, isValid = true });
         }
 
-
-        // Helper Submit for Create and Edit 
+        // Helper method  (Create and Edit)
         private ActionResult HandleSubmit(Func<MedicationEntity> saveAction, MedicationEntity entity, string successType)
         {
             if (!ModelState.IsValid)
             {
-                TempData["ToastMessage"] = "Validation error.";
+                var errors = ModelState.Values
+                                        .SelectMany(v => v.Errors)
+                                        .Select(e => e.ErrorMessage)
+                                        .ToList();
+
+                TempData["ToastMessage"] = errors.Any()
+                    ? string.Join(", ", errors) 
+                    : "Validation error.";
+
                 TempData["ToastType"] = "danger";
                 return View(entity);
             }
 
             var result = saveAction();
 
+            // Success
             if (result.IsSuccess)
             {
                 TempData["ToastMessage"] = result.MessageList[0];
@@ -146,9 +158,11 @@ namespace AL.Areas.Medication.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Failed
             TempData["ToastMessage"] = string.Join(", ", result.MessageList);
             TempData["ToastType"] = "danger";
             return View(entity);
         }
+
     }
 }

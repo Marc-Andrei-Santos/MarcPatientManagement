@@ -188,7 +188,6 @@
     <Content Include="Scripts\lib\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\lib\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\lib\modernizr-2.8.3.js" />
-    <Content Include="Scripts\Page\Dashboard\Dashboard.js" />
     <Content Include="Scripts\Page\Medication\Create.js" />
     <Content Include="Scripts\Page\Medication\Delete.js" />
     <Content Include="Scripts\Page\Medication\Edit.js" />

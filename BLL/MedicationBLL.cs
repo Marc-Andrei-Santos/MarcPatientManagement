@@ -15,6 +15,8 @@ namespace BLL
 
         public MedicationEntity GetById(int id) => _dal.GetById(id);
 
+
+        // Insert
         public MedicationEntity Insert(MedicationEntity entity)
         {
             var result = new MedicationEntity();
@@ -27,7 +29,7 @@ namespace BLL
             catch (ApplicationException ex)
             {
                 result.IsSuccess = false;
-                result.MessageList.Add(ex.Message); 
+                result.MessageList.Add(ex.Message);
             }
             catch (Exception ex)
             {
@@ -37,6 +39,7 @@ namespace BLL
             return result;
         }
 
+        // Update
         public MedicationEntity Update(MedicationEntity entity)
         {
             var result = new MedicationEntity();
@@ -74,21 +77,29 @@ namespace BLL
             return result;
         }
 
+        // Delete
         public MedicationEntity Delete(int id)
         {
             var result = new MedicationEntity();
             try
             {
-                var success = _dal.Delete(id);
-                result.IsSuccess = success;
-                result.MessageList.Add(success ? MessageUtil.RecordDeleted : MessageUtil.DeleteFailed);
+                var isDeleted = _dal.Delete(id);
+                if (isDeleted)
+                {
+                    result.IsSuccess = true;
+                    result.MessageList.Add(MessageUtil.RecordDeleted);
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.MessageList.Add(MessageUtil.DeleteFailed);
+                }
             }
-            catch (Exception ex)
+            catch (ApplicationException ex)
             {
                 result.IsSuccess = false;
-                result.MessageList.Add("Unexpected error while deleting: " + ex.Message);
+                result.MessageList.Add(ex.Message);
             }
-
             return result;
         }
 
