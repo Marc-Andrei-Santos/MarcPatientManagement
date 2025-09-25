@@ -79,7 +79,8 @@
         $("#editForm input[type='text'], #editForm input[type='number'], #editForm input[type='date']").val('');
         $("#editForm .input-validation-error").removeClass("input-validation-error");
         $("#PatientError, #DrugError, #DosageError").text('');
-    });
+        $("#Dosage").focus();
+    });
 
     $("#Patient, #Drug, #Dosage").on("input", function () {
         $(this).removeClass("input-validation-error");
