@@ -29,7 +29,6 @@
 
         </div>
 
-
         <div class="divider"></div>
 
         <!-- Medication -->
@@ -51,7 +50,6 @@
         <hr />
     </div>
 
-
     @Html.Partial("_Toast")
 
     <script src="~/Scripts/lib/jquery-3.7.0.js"></script>
@@ -60,27 +58,22 @@
     <script src="~/Scripts/lib/bootstrap.js"></script>
 
     <script>
-window.Messages = {
-    DuplicateRecord: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.DuplicateRecord))',
-    RecordAlreadyExists: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.RecordAlreadyExists))',
-    NoChanges: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.NoChanges))',
-    InvalidPatient: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.InvalidPatient))',
-    InvalidDrug: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.InvalidDrug))',
-    InvalidDosage: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.InvalidDosage))',
-    NegativeDosage: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.NegativeDosage))',
-    AllFieldsRequired: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.AllFieldsRequired))'
-};
+        window.Messages =
+        {
+            DuplicateRecord: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.DuplicateRecord))',
+            RecordAlreadyExists: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.RecordAlreadyExists))',
+            NoChanges: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.NoChanges))',
+            InvalidPatient: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.InvalidPatient))',
+            InvalidDrug: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.InvalidDrug))',
+            InvalidDosage: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.InvalidDosage))',
+            NegativeDosage: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.NegativeDosage))',
+            AllFieldsRequired: '@Html.Raw(HttpUtility.JavaScriptStringEncode(UL.MessageUtil.AllFieldsRequired))'
+        };
     </script>
 
-
-    <!-- Global JS Scripts -->
     <script src="~/Scripts/Page/Medication/Toast.js"></script>
-    <script src="~/Scripts/Page/Medication/Create.js"></script>
-    <script src="~/Scripts/Page/Medication/Edit.js"></script>
-    <script src="~/Scripts/Page/Medication/Delete.js"></script>
 
     @RenderSection("scripts", required: false)
 
 </body>
 </html>
-

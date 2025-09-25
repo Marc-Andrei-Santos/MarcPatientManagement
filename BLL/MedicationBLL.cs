@@ -26,6 +26,7 @@ namespace BLL
                 result.IsSuccess = success;
                 result.MessageList.Add(success ? MessageUtil.RecordCreated : MessageUtil.SaveFailed);
             }
+           
             catch (ApplicationException ex)
             {
                 result.IsSuccess = false;
@@ -45,7 +46,7 @@ namespace BLL
             var result = new MedicationEntity();
             try
             {
-
+       
                 var currentRecord = GetById(entity.Id);
                 if (currentRecord.Patient == entity.Patient &&
                     currentRecord.Drug == entity.Drug &&
@@ -55,7 +56,7 @@ namespace BLL
                     result.MessageList.Add(MessageUtil.NoChanges);
                     return result;
                 }
-
+            
                 var validation = ValidateEntity(entity, true);
                 if (validation != null) return validation;
 

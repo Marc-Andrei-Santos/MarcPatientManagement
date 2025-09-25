@@ -14,9 +14,6 @@
             $resetBtn.removeClass("show");
         }
     }
-    function normalizeSpaces(text) {
-        return text.replace(/\s+/g, ' ').trim();
-    }
 
     function flexibleMatch(input, target) {
         if (!input) return true;
@@ -27,7 +24,6 @@
             return w && target.includes(w);
         });
     }
-
     function filterTable() {
         let patientVal = $patientInput.val().toLowerCase();
         let drugVal = $drugInput.val().toLowerCase();
@@ -53,7 +49,6 @@
             }
         });
     }
-
 
     $patientInput.on("input", function () {
         toggleResetButton();
