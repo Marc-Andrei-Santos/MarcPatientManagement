@@ -13,15 +13,94 @@
     <link href="~/Content/CSS/bootstrap/bootstrap.css" rel="stylesheet" />
     <!-- Google Fonts for stylish text -->
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
-    <link href="~/Content/CSS/site/Site.css" rel="stylesheet" />
 </head>
-<body class="notfound-container">
-    <img src="~/Content/images/confuse.jpg" alt="Lost" class="notfound-image" />
-    <div class="notfound-title">404 - Page Not Found</div>
-    <div class="notfound-label">Looks like you're lost</div>
-    <div class="notfound-desc">The page you are looking for does not exist or has been moved.</div>
-    <a href="@Url.Action("Index", "Medication", new { area = "Medication" })" class="btn-home">
+<body class="notfound-page-container">
+    <img src="~/Content/images/confuse.jpg" alt="Lost" class="notfound-page-image" />
+    <div class="notfound-page-title">404 - Page Not Found</div>
+    <div class="notfound-page-label">Looks like you're lost</div>
+    <div class="notfound-page-desc">The page you are looking for does not exist or has been moved.</div>
+    <a href="@Url.Action("Index", "Medication", new { area = "Medication" })" class="notfound-page-btn">
         Return to Main
     </a>
 </body>
 </html>
+
+<style>
+
+.notfound-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+.notfound-page-image {
+    max-width: 480px; 
+    width: 100%;
+    height: auto;
+    margin-bottom: 30px;
+}
+
+.notfound-page-title {
+    font-family: 'Roboto Slab', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #0d3b66;
+    margin-bottom: 15px;
+}
+
+.notfound-page-label {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.notfound-page-desc {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.notfound-page-btn {
+    display: inline-block;
+    padding: 10px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #0d3b66;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .notfound-page-btn:hover {
+        background-color: #055293;
+        transform: translateY(-2px);
+        text-decoration: none;
+    }
+@@media (max-width: 576px) {
+    .notfound-page-image {
+        max-width: 250px;
+        margin-bottom: 20px;
+    }
+
+    .notfound-page-title {
+        font-size: 36px;
+    }
+
+    .notfound-page-label {
+        font-size: 18px;
+    }
+
+    .notfound-page-desc {
+        font-size: 14px;
+    }
+}
+
+</style>

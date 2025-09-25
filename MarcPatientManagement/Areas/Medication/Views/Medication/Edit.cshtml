@@ -8,51 +8,98 @@
 <h2>Edit Record</h2>
 <hr />
 
-@using (Html.BeginForm("Edit", "Medication", new { area = "Medication" }, FormMethod.Post, new { id = "editForm" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.Id, new { id = "Id" })
+<div style="padding-left: 60px;">
+    @using (Html.BeginForm(
+        "Edit",
+        "Medication",
+        new { area = "Medication" },
+        FormMethod.Post,
+        new { id = "editForm" }
+    ))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id, new { id = "Id" })
 
-    <div class="mb-3">
-        @Html.LabelFor(m => m.Patient)
-        @Html.TextBoxFor(m => m.Patient, new { @class = "form-control", placeholder = "Enter patient name", id = "Patient" })
-        @Html.ValidationMessageFor(m => m.Patient, "", new { @class = "text-danger", id = "PatientError" })
-    </div>
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Dosage)
+            @Html.TextBoxFor(m => m.Dosage, new
+       {
+               @class = "form-control",
+               style = "width:350px;",
+               placeholder = "Enter dosage",
+               step = "0.0001",
+               min = "0.01",
+               max = "999.9999",
+               oninput = "this.value=this.value.replace(/[^0-9.]/g,'')",
+               autofocus = "autofocus",
+               id = "Dosage"
+       })
+            @Html.ValidationMessageFor(m => m.Dosage, "", new { @class = "text-danger", id = "DosageError" })
+        </div>
 
-    <div class="mb-3">
-        @Html.LabelFor(m => m.Drug)
-        @Html.TextBoxFor(m => m.Drug, new { @class = "form-control", placeholder = "Enter drug name", id = "Drug" })
-        @Html.ValidationMessageFor(m => m.Drug, "", new { @class = "text-danger", id = "DrugError" })
-    </div>
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Drug)
+            @Html.TextBoxFor(m => m.Drug, new
+            {
+                @class = "form-control",
+                style = "width:350px;",
+                placeholder = "Enter drug name",
+                id = "Drug"
+            })
+            @Html.ValidationMessageFor(m => m.Drug, "", new { @class = "text-danger", id = "DrugError" })
+        </div>
 
-    <div class="mb-3">
-        @Html.LabelFor(m => m.Dosage)
-        @Html.TextBoxFor(m => m.Dosage, new { @class = "form-control", placeholder = "Enter dosage", step = "0.0001", min = "0.01", max = "999.9999", oninput = "this.value=this.value.replace(/[^0-9.]/g,'')", id = "Dosage" })
-        @Html.ValidationMessageFor(m => m.Dosage, "", new { @class = "text-danger", id = "DosageError" })
-    </div>
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Patient)
+            @Html.TextBoxFor(m => m.Patient, new
+            {
+                @class = "form-control",
+                style = "width:350px;",
+                placeholder = "Enter patient name",
+                id = "Patient"
+            })
+            @Html.ValidationMessageFor(m => m.Patient, "", new { @class = "text-danger", id = "PatientError" })
+        </div>
 
-    <hr />
-    <div class="d-flex mb-3">
-        <button type="button" id="updateBtn" class="btn btn-success me-2">Update</button>
-        <button type="button" id="clearAllBtn" class="btn btn-warning me-2">Clear All</button>
-        @Html.ActionLink("Cancel", "Index", "Medication", new { area = "Medication" }, new { @class = "btn btn-secondary" })
-    </div>
-}
+        <div style="width:350px; margin-top:20px; text-align:left;">
+            <button type="button" id="updateBtn"
+                    style="background: #e3e3e3; color: #000; border: 1px solid #aaa; padding: 6px 12px; font-size: 0.85rem; border-radius: 5px; cursor: pointer; transition: 0.2s; margin-left: 59px;">
+                Update
+            </button>
+
+            <button type="button" id="clearAllBtn"
+                    style="background: #e3e3e3; color: #000; border: 1px solid #aaa; padding: 6px 12px; font-size: 0.85rem; border-radius: 5px; cursor: pointer; transition: 0.2s;">
+                Clear All
+            </button>
+
+            @Html.ActionLink("Cancel", "Index", "Medication", new { area = "Medication" }, new
+       {
+           style = "background:#e3e3e3; color:#000; border:1px solid #aaa; padding:6px 12px; font-size:0.85rem; border-radius:5px; text-decoration:none; display:inline-block; transition:0.2s;"
+       })
+        </div>
+    }
+</div>
 
 <!-- Confirmation Modal -->
-<div class="modal fade" id="confirmUpdateModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="confirmUpdateModal" tabindex="-1">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Confirm</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
             </div>
-            <div class="modal-body">Are you sure you want to update this record?</div>
+            <div class="modal-body">
+                Are you sure you want to update this record?
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelUpdate">Cancel</button>
-                <button type="button" class="btn btn-success" id="confirmUpdate">Yes</button>
+                <button type="button" id="cancelUpdate"
+                        style="background:#e3e3e3; color:#000; border:1px solid #aaa; padding:6px 12px; font-size:0.85rem; border-radius:5px; cursor:pointer; transition:0.2s;">
+                    Cancel
+                </button>
+
+                <button type="button" id="confirmUpdate"
+                        style="background:#e3e3e3; color:#000; border:1px solid #aaa; padding:6px 12px; font-size:0.85rem; border-radius:5px; cursor:pointer; transition:0.2s;">
+                    Yes
+                </button>
             </div>
         </div>
     </div>

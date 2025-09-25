@@ -17,9 +17,12 @@ namespace AL.Areas.Medication.Controllers
         {
             ViewBag.ActiveTab = "Medication";
 
-            var allData = _bll.GetAll();
-            return View(allData.ToList());
+            var allData = _bll.GetAll()
+                              .OrderByDescending(x => x.ModifiedDate)
+                              .ToList();
+            return View(allData);
         }
+
 
         // GET: Create
         public ActionResult Create()
