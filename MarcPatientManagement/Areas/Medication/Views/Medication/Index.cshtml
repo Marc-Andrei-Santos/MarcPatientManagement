@@ -4,28 +4,27 @@
     ViewBag.Title = "Patient Details";
 }
 
-<h2>PatientDetails</h2>
+<h2>Patient Details</h2>
 
 <hr />
 
 <div id="filterWrapper">
-    <div class="d-flex justify-content-end mb-3">
-        <a href="@Url.Action("Create", "Medication", new { area = "Medication" })"
-           class="btn btn-success">
-            <i class="fas fa-plus me-1"></i> Add New Record
+    <div class="d-flex justify-content-start mb-3">
+        <a href="@Url.Action("Create", "Medication", new { area = "Medication" })" class="action-link no-underline">
+            Create New Records
         </a>
     </div>
+
     <hr />
     <div class="card shadow-sm rounded">
         <div class="card-body p-0">
 
-            <!-- Table  -->
-            <table class="table custom-table mb-0">
+            <!-- Table -->
+            <table class="table custom-table mb-0 patient-table">
                 <thead>
-
                     <tr class="filter-row">
-                        <th class="text-center align-middle">
-                            <span class="fw-semibold" style="margin-right: 8px;">Search by:</span>
+                        <th class="text-center align-middle search-label">
+                            <span style="margin-right: 8px;">Search by:</span>
                         </th>
                         <th>
                             <input type="date" name="modifiedDateFilter" value="@ViewBag.ModifiedDateFilter" class="form-control filter-input" />
@@ -38,7 +37,7 @@
                         </th>
                         <th class="d-flex align-items-center">
                             <input type="text" name="patientFilter" value="@ViewBag.PatientFilter" placeholder="Patient" class="form-control filter-input me-2" />
-                            <button id="resetBtn" class="btn btn-secondary">Reset</button>
+                            <a href="#" id="resetBtn" class="reset-link">Reset</a>
                         </th>
                     </tr>
 
@@ -57,15 +56,9 @@
                         {
                             <tr>
                                 <td class="text-center">
-                                    <a href="@Url.Action("Edit", "Medication", new { area = "Medication", id = item.Id })"
-                                       class="btn btn-outline-primary btn-sm me-1" title="Edit">
-                                        Edit
-                                    </a>
-                                    <button type="button"
-                                            class="btn btn-outline-danger btn-sm delete-btn"
-                                            data-id="@item.Id" title="Delete">
-                                        Delete
-                                    </button>
+                                    <a href="@Url.Action("Edit", "Medication", new { area = "Medication", id = item.Id })" class="action-link" title="Edit">Edit</a>
+                                    <span class="mx-1">|</span>
+                                    <a href="#" class="action-link delete-btn" data-id="@item.Id" title="Delete">Delete</a>
                                 </td>
                                 <td>@item.ModifiedDate.ToString("yyyy-MM-dd")</td>
                                 <td>@(item.Dosage?.ToString("F2") ?? "0.00")</td>
@@ -82,7 +75,6 @@
                     }
                 </tbody>
             </table>
-
         </div>
     </div>
 
@@ -108,10 +100,10 @@
                 Are you sure you want to delete this record?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="#" data-dismiss="modal">Cancel</a>
                 <form id="deleteForm" method="post" style="display:inline;">
                     @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-danger">Yes</button>
+                    <button type="submit">Yes</button>
                 </form>
             </div>
         </div>

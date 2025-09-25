@@ -13,7 +13,7 @@
         public const string DeleteFailed = "Failed to delete record.";
 
         // Validation Messages
-        public const string AllFieldsRequired = "All fields are required.";
+        public const string AllFieldsRequired = "All field/s are required.";
         public const string DuplicateRecord = "You cannot add same drug to a patient.";
         public const string RecordAlreadyExists = "Record already exists.";
         public const string NoChanges = "It seems nothing was changed.";
