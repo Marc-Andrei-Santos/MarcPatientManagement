@@ -25,7 +25,6 @@
        {
            @class = "form-control",
            style = "width:350px;",
-           placeholder = "Enter dosage",
            step = "0.0001",
            min = "0.01",
            max = "999.9999",
@@ -42,7 +41,6 @@
             {
                 @class = "form-control",
                 style = "width:350px;",
-                placeholder = "Enter drug name",
                 id = "Drug"
             })
             @Html.ValidationMessageFor(m => m.Drug, "", new { @class = "text-danger", id = "DrugError" })
@@ -54,7 +52,6 @@
             {
                 @class = "form-control",
                 style = "width:350px;",
-                placeholder = "Enter patient name",
                 title = "Patient name is required",
                 id = "Patient"
             })

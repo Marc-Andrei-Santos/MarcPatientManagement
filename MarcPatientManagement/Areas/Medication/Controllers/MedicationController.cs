@@ -49,27 +49,43 @@ namespace AL.Areas.Medication.Controllers
         public ActionResult Edit(int? id)
         {
             if (!id.HasValue || Request.Url.Segments.Length > 5)
-            {
                 return RedirectToAction("Index");
-            }
 
             var entity = _bll.GetById(id.Value);
             if (entity == null)
                 return RedirectToAction("Index");
 
+            if (Session["AllowedEditId"] == null)
+            {
+                Session["AllowedEditId"] = id.Value;
+            }
+            else
+            {
+                int allowedId = (int)Session["AllowedEditId"];
+                if (allowedId != id.Value)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
             return View(entity);
         }
 
-
-        // POST: Edit/
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(MedicationEntity entity)
         {
+            if (Session["AllowedEditId"] == null || (int)Session["AllowedEditId"] != entity.Id)
+            {
+                return RedirectToAction("Index");
+            }
+
             var existing = _bll.GetById(entity.Id);
             if (existing == null)
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+                return RedirectToAction("Index");
 
+            // success/failure handling
             return HandleSubmit(() => _bll.Update(entity), entity, "warning");
         }
 
