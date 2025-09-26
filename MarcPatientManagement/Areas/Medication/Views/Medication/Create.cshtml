@@ -32,7 +32,6 @@
            autofocus = "autofocus",
            id = "Dosage"
        })
-            @Html.ValidationMessageFor(m => m.Dosage, "", new { @class = "text-danger", id = "DosageError" })
         </div>
 
         <div class="mb-3">
@@ -43,7 +42,6 @@
                 style = "width:350px;",
                 id = "Drug"
             })
-            @Html.ValidationMessageFor(m => m.Drug, "", new { @class = "text-danger", id = "DrugError" })
         </div>
 
         <div class="mb-3">
@@ -55,7 +53,6 @@
                 title = "Patient name is required",
                 id = "Patient"
             })
-            @Html.ValidationMessageFor(m => m.Patient, "", new { @class = "text-danger", id = "PatientError" })
         </div>
 
         <div style="width:350px; margin-top:20px; text-align:left;">

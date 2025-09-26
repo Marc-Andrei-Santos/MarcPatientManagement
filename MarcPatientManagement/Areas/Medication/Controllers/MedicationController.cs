@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using BLL;
 using EL;
@@ -15,170 +14,221 @@ namespace AL.Areas.Medication.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.ActiveTab = "Medication";
+            try
+            {
+                ViewBag.ActiveTab = "Medication";
+                Session["AllowedEditId"] = null;
 
-            var allData = _bll.GetAll()
-                              .OrderByDescending(x => x.ModifiedDate)
-                              .ToList();
-            return View(allData);
+                var allData = _bll.GetAll()
+                                  .OrderByDescending(x => x.ModifiedDate)
+                                  .ToList();
+
+                return View(allData);
+            }
+            catch (Exception)
+            {
+                TempData["ToastMessage"] = "An error occurred while loading records.";
+                TempData["ToastType"] = "danger";
+                return RedirectToAction("Error", "Home", new { area = "" });
+            }
         }
 
-
-        // GET: Create
+        // Get Create
         public ActionResult Create()
         {
-            if (Request.Url.Segments.Length > 4) 
+            try
             {
+                if (Request.Url.Segments.Length > 4)
+                    return RedirectToAction("Index");
+
+                return View(new MedicationEntity { ModifiedDate = DateTime.Now });
+            }
+            catch (Exception)
+            {
+                // log exception here
+                TempData["ToastMessage"] = "An error occurred while preparing the create form.";
+                TempData["ToastType"] = "danger";
                 return RedirectToAction("Index");
             }
-
-            return View(new MedicationEntity { ModifiedDate = DateTime.Now });
         }
 
-        // POST: Create
+        // Post Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(MedicationEntity entity)
         {
-            entity.ModifiedDate = DateTime.Now;
-            return HandleSubmit(() => _bll.Insert(entity), entity, "success");
+            try
+            {
+                entity.ModifiedDate = DateTime.Now;
+                return HandleSubmit(() => _bll.Insert(entity), entity, "success");
+            }
+            catch (Exception)
+            {
+                TempData["ToastMessage"] = "An error occurred while saving the record.";
+                TempData["ToastType"] = "danger";
+                return View(entity);
+            }
         }
 
-
-        // GET: Edit/5
+        // Get Edit
         public ActionResult Edit(int? id)
         {
-            if (!id.HasValue || Request.Url.Segments.Length > 5)
-                return RedirectToAction("Index");
-
-            var entity = _bll.GetById(id.Value);
-            if (entity == null)
-                return RedirectToAction("Index");
-
-            if (Session["AllowedEditId"] == null)
+            try
             {
-                Session["AllowedEditId"] = id.Value;
-            }
-            else
-            {
-                int allowedId = (int)Session["AllowedEditId"];
-                if (allowedId != id.Value)
+                if (!id.HasValue || Request.Url.Segments.Length > 5)
+                    return RedirectToAction("Index");
+
+                if (Session["AllowedEditId"] == null)
+                {
+                    Session["AllowedEditId"] = id;
+                }
+                else if ((int)Session["AllowedEditId"] != id)
                 {
                     return RedirectToAction("Index");
                 }
-            }
 
-            return View(entity);
+                var entity = _bll.GetById(id.Value);
+                if (entity == null)
+                    return RedirectToAction("Index");
+
+                return View(entity);
+            }
+            catch (Exception)
+            {
+                TempData["ToastMessage"] = "An error occurred while loading the edit form.";
+                TempData["ToastType"] = "danger";
+                return RedirectToAction("Index");
+            }
         }
 
-        // POST: Edit
+        // Post Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(MedicationEntity entity)
         {
-            if (Session["AllowedEditId"] == null || (int)Session["AllowedEditId"] != entity.Id)
+            try
             {
-                return RedirectToAction("Index");
+                if (Session["AllowedEditId"] == null || (int)Session["AllowedEditId"] != entity.Id)
+                    return RedirectToAction("Index");
+
+                var existing = _bll.GetById(entity.Id);
+                if (existing == null)
+                    return RedirectToAction("Index");
+
+                return HandleSubmit(() => _bll.Update(entity), entity, "warning");
             }
-
-            var existing = _bll.GetById(entity.Id);
-            if (existing == null)
-                return RedirectToAction("Index");
-
-            // success/failure handling
-            return HandleSubmit(() => _bll.Update(entity), entity, "warning");
+            catch (Exception)
+            {
+                TempData["ToastMessage"] = "An error occurred while updating the record.";
+                TempData["ToastType"] = "danger";
+                return View(entity);
+            }
         }
 
-
-        // POST: Delete/5
+        // Post Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var existing = _bll.GetById(id);
-            if (existing == null)
-                return RedirectToAction("NotFound", "Error", new { area = "" });
+            try
+            {
+                var existing = _bll.GetById(id);
+                if (existing == null)
+                    return RedirectToAction("NotFound", "Error", new { area = "" });
 
-            var result = _bll.Delete(id);
-            TempData["ToastMessage"] = string.Join(", ", result.MessageList);
-            TempData["ToastType"] = "danger";
-            return RedirectToAction("Index");
+                var result = _bll.Delete(id);
+
+                TempData["ToastMessage"] = string.Join(", ", result.MessageList);
+                TempData["ToastType"] = "danger";
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                TempData["ToastMessage"] = "An error occurred while deleting the record.";
+                TempData["ToastType"] = "danger";
+                return RedirectToAction("Index");
+            }
         }
 
-        // POST: Check Duplicates
+        // Check Duplicates
         public JsonResult CheckDuplicate(string patient, string drug, decimal? dosage, int? id = null)
         {
-            var allRecords = _bll.GetAll();
-
-            if (id.HasValue)
-                allRecords = allRecords.Where(x => x.Id != id.Value).ToList();
-
-            // (Patient + Drug + Dosage)
-            if (allRecords.Any(x =>
-                    x.Patient == patient &&
-                    x.Drug == drug &&
-                    x.Dosage == dosage))
+            try
             {
-                return Json(new { isDuplicate = true, message = MessageUtil.RecordAlreadyExists, isValid = false });
-            }
+                var allRecords = _bll.GetAll();
 
-            // (Patient + Drug)
-            if (allRecords.Any(x =>
-                    x.Patient == patient &&
-                    x.Drug == drug))
-            {
-                return Json(new { isDuplicate = true, message = MessageUtil.DuplicateRecord, isValid = false });
-            }
+                if (id.HasValue)
+                    allRecords = allRecords.Where(x => x.Id != id.Value).ToList();
 
-            // No changes made (for Edit)
-            if (id.HasValue)
-            {
-                var currentRecord = _bll.GetById(id.Value);
-                if (currentRecord != null &&
-                    currentRecord.Patient == patient &&
-                    currentRecord.Drug == drug &&
-                    currentRecord.Dosage == dosage)
+                if (allRecords.Any(x => x.Patient == patient && x.Drug == drug && x.Dosage == dosage))
                 {
-                    return Json(new { isDuplicate = true, message = MessageUtil.NoChanges, isValid = false });
+                    return Json(new { isDuplicate = true, message = MessageUtil.RecordAlreadyExists, isValid = false });
                 }
-            }
 
-            return Json(new { isDuplicate = false, isValid = true });
+                if (allRecords.Any(x => x.Patient == patient && x.Drug == drug))
+                {
+                    return Json(new { isDuplicate = true, message = MessageUtil.DuplicateRecord, isValid = false });
+                }
+
+                if (id.HasValue)
+                {
+                    var currentRecord = _bll.GetById(id.Value);
+                    if (currentRecord != null &&
+                        currentRecord.Patient == patient &&
+                        currentRecord.Drug == drug &&
+                        currentRecord.Dosage == dosage)
+                    {
+                        return Json(new { isDuplicate = true, message = MessageUtil.NoChanges, isValid = false });
+                    }
+                }
+
+                return Json(new { isDuplicate = false, isValid = true });
+            }
+            catch (Exception)
+            {
+                return Json(new { isDuplicate = false, isValid = false, message = "An error occurred while checking duplicates." });
+            }
         }
 
-        // Helper method  (Create and Edit)
+        // Helper Method Save Action
         private ActionResult HandleSubmit(Func<MedicationEntity> saveAction, MedicationEntity entity, string successType)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                var errors = ModelState.Values
-                                        .SelectMany(v => v.Errors)
-                                        .Select(e => e.ErrorMessage)
-                                        .ToList();
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values
+                                            .SelectMany(v => v.Errors)
+                                            .Select(e => e.ErrorMessage)
+                                            .ToList();
 
-                TempData["ToastMessage"] = errors.Any()
-                    ? string.Join(", ", errors) 
-                    : "Validation error.";
+                    TempData["ToastMessage"] = errors.Any() ? string.Join(", ", errors) : "Validation error.";
+                    TempData["ToastType"] = "danger";
 
+                    return View(entity);
+                }
+
+                var result = saveAction();
+
+                if (result.IsSuccess)
+                {
+                    TempData["ToastMessage"] = result.MessageList.FirstOrDefault() ?? "Operation successful.";
+                    TempData["ToastType"] = successType;
+                    return RedirectToAction("Index");
+                }
+
+                TempData["ToastMessage"] = string.Join(", ", result.MessageList);
+                TempData["ToastType"] = "danger";
+
+                return View(entity);
+            }
+            catch (Exception)
+            {
+                TempData["ToastMessage"] = "An unexpected error occurred while saving the record.";
                 TempData["ToastType"] = "danger";
                 return View(entity);
             }
-
-            var result = saveAction();
-
-            // Success
-            if (result.IsSuccess)
-            {
-                TempData["ToastMessage"] = result.MessageList[0];
-                TempData["ToastType"] = successType;
-                return RedirectToAction("Index");
-            }
-
-            // Failed
-            TempData["ToastMessage"] = string.Join(", ", result.MessageList);
-            TempData["ToastType"] = "danger";
-            return View(entity);
         }
-
     }
 }
