@@ -26,15 +26,11 @@
        {
                @class = "form-control",
                style = "width:350px;",
-               placeholder = "Enter dosage",
                step = "0.0001",
-               min = "0.01",
-               max = "999.9999",
                oninput = "this.value=this.value.replace(/[^0-9.]/g,'')",
                autofocus = "autofocus",
                id = "Dosage"
        })
-            @Html.ValidationMessageFor(m => m.Dosage, "", new { @class = "text-danger", id = "DosageError" })
         </div>
 
         <div class="mb-3">
@@ -43,10 +39,8 @@
             {
                 @class = "form-control",
                 style = "width:350px;",
-                placeholder = "Enter drug name",
                 id = "Drug"
             })
-            @Html.ValidationMessageFor(m => m.Drug, "", new { @class = "text-danger", id = "DrugError" })
         </div>
 
         <div class="mb-3">
@@ -55,10 +49,8 @@
             {
                 @class = "form-control",
                 style = "width:350px;",
-                placeholder = "Enter patient name",
                 id = "Patient"
             })
-            @Html.ValidationMessageFor(m => m.Patient, "", new { @class = "text-danger", id = "PatientError" })
         </div>
 
         <div style="width:350px; margin-top:20px; text-align:left;">

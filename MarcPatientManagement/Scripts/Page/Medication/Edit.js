@@ -8,63 +8,78 @@
     });
 
     $("#updateBtn").click(function () {
-        if (form.valid()) {
-            var patient = $("#Patient").val().trim();
-            var drug = $("#Drug").val().trim();
-            var dosage = parseFloat($("#Dosage").val());
-            var id = $("#Id").val();
-            var date = new Date().toISOString().split('T')[0];
+        var patient = $("#Patient").val().trim();
+        var drug = $("#Drug").val().trim();
+        var dosageVal = $("#Dosage").val().trim();
+        var dosage = parseFloat(dosageVal);
+        var id = $("#Id").val();
+        var date = new Date().toISOString().split('T')[0];
 
-            var patientPattern = /^(?=.*\p{L})[\p{L}\p{M}\s'-]+$/u;
-            if (!patientPattern.test(patient)) {
-                showToast(window.Messages.InvalidPatient, "danger");
-                $("#Patient").addClass("input-validation-error");
-                return;
-            } else {
-                $("#Patient").removeClass("input-validation-error");
-            }
-
-            var drugPattern = /^(?=.*[A-Za-z0-9])[A-Za-z0-9\s'-]+$/;
-
-            if (!drugPattern.test(drug) || drug.length > 50) {
-                showToast(window.Messages.InvalidDrug, "danger");
-                $("#Drug").addClass("input-validation-error");
-                return;
-            } else {
-                $("#Drug").removeClass("input-validation-error");
-            }
-
-            var dosagePattern = /^\d+(\.\d{1,4})?$/;
-            if (isNaN(dosage) || dosage <= 0 || !dosagePattern.test(dosage.toString())) {
-                showToast(window.Messages.InvalidDosage, "danger");
-                $("#Dosage").addClass("input-validation-error");
-                return;
-            } else {
-                $("#Dosage").removeClass("input-validation-error");
-            }
-
-            $.post(window.checkDuplicateUrl, { patient, drug, date, id, dosage }, function (res) {
-                $("#Patient, #Drug, #Dosage").removeClass("input-validation-error");
-
-                if (!res.isValid) {
-                    const msg = res.message || "Error";
-                    showToast(msg, "danger");
-
-                    if (msg.includes(window.Messages.RecordAlreadyExists)) {
-                        $("#Patient, #Drug, #Dosage").addClass("input-validation-error");
-                    } else if (msg.toLowerCase().includes("cannot add same drug")) {
-                        $("#Patient, #Drug").addClass("input-validation-error");
-                    }
-
-                    return;
-                }
-
-                $("#confirmUpdateModal").modal("show");
-            });
-
-        } else {
+        // 🔹 Check empty fields
+        if (!patient || !drug || !dosageVal) {
             showToast(window.Messages.AllFieldsRequired, "danger");
+            if (!patient) $("#Patient").addClass("input-validation-error");
+            if (!drug) $("#Drug").addClass("input-validation-error");
+            if (!dosageVal) $("#Dosage").addClass("input-validation-error");
+            return;
         }
+
+        // 🔹 Patient validation
+        var patientPattern = /^(?=.*\p{L})[\p{L}\p{M}\s'-]+$/u;
+        if (!patientPattern.test(patient)) {
+            showToast(window.Messages.InvalidPatient, "danger");
+            $("#Patient").addClass("input-validation-error");
+            return;
+        } else if (patient.length > 50) {
+            showToast("Patient name cannot exceed 50 characters.", "danger");
+            $("#Patient").addClass("input-validation-error");
+            return;
+        } else {
+            $("#Patient").removeClass("input-validation-error");
+        }
+
+        // 🔹 Drug validation
+        var drugPattern = /^[\p{L}\p{N} ]+$/u;
+        if (!drugPattern.test(drug)) {
+            showToast(window.Messages.InvalidDrug, "danger");
+            $("#Drug").addClass("input-validation-error");
+            return;
+        } else if (drug.length > 50) {
+            showToast("Drug name cannot exceed 50 characters.", "danger");
+            $("#Drug").addClass("input-validation-error");
+            return;
+        } else {
+            $("#Drug").removeClass("input-validation-error");
+        }
+
+        // 🔹 Dosage validation
+        var dosagePattern = /^\d{1,3}(\.\d{1,4})?$/;
+        if (!dosagePattern.test(dosageVal) || dosage <= 0) {
+            showToast(window.Messages.InvalidDosage, "danger");
+            $("#Dosage").addClass("input-validation-error");
+            return;
+        } else {
+            $("#Dosage").removeClass("input-validation-error");
+        }
+
+        // 🔹 Duplicate check
+        $.post(window.checkDuplicateUrl, { patient, drug, date, id, dosage }, function (res) {
+            $("#Patient, #Drug, #Dosage").removeClass("input-validation-error");
+
+            if (!res.isValid) {
+                const msg = res.message || "Error";
+                showToast(msg, "danger");
+
+                if (msg.includes(window.Messages.RecordAlreadyExists)) {
+                    $("#Patient, #Drug, #Dosage").addClass("input-validation-error");
+                } else if (msg.toLowerCase().includes("cannot add same drug")) {
+                    $("#Patient, #Drug").addClass("input-validation-error");
+                }
+                return;
+            }
+
+            $("#confirmUpdateModal").modal("show");
+        });
     });
 
     $("#confirmUpdate").click(function () {
@@ -79,8 +94,8 @@
         $("#editForm input[type='text'], #editForm input[type='number'], #editForm input[type='date']").val('');
         $("#editForm .input-validation-error").removeClass("input-validation-error");
         $("#PatientError, #DrugError, #DosageError").text('');
-        $("#Dosage").focus();
-    });
+        $("#Dosage").focus();
+    });
 
     $("#Patient, #Drug, #Dosage").on("input", function () {
         $(this).removeClass("input-validation-error");

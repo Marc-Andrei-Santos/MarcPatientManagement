@@ -29,19 +29,28 @@
             showToast(window.Messages.InvalidPatient, "danger");
             $("#Patient").addClass("input-validation-error");
             return;
+        } else if (patient.length > 50) {
+            showToast("Patient name cannot exceed 50 characters.", "danger");
+            $("#Patient").addClass("input-validation-error");
+            return;
         } else {
             $("#Patient").removeClass("input-validation-error");
         }
 
-        // Drug valdation
+        // Drug validation
         var drugPattern = /^[\p{L}\p{N} ]+$/u;
         if (!drugPattern.test(drug)) {
             showToast(window.Messages.InvalidDrug, "danger");
             $("#Drug").addClass("input-validation-error");
             return;
+        } else if (drug.length > 50) {
+            showToast("Drug name cannot exceed 50 characters.", "danger");
+            $("#Drug").addClass("input-validation-error");
+            return;
         } else {
             $("#Drug").removeClass("input-validation-error");
         }
+
 
         //  Dosage validation
         var dosagePattern = /^\d{1,3}(\.\d{1,4})?$/;
