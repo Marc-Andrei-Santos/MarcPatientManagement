@@ -10,12 +10,13 @@
 
 <div id="filterWrapper">
     <div class="d-flex justify-content-start mb-3">
-        <a href="@Url.Action("Create", "Medication", new { area = "Medication" })" class="action-link no-underline">
+        <a href="@Url.Action("Create", "Medication", new { area = "Medication" })"
+           style="text-decoration:none;">
             Create New Records
         </a>
+
     </div>
 
-    <hr />
     <div class="card shadow-sm rounded">
         <div class="card-body p-0">
 
@@ -81,11 +82,6 @@
     <div id="showingInfo" class="text-start text-muted fw-semibold small mt-2" style="font-size: 0.95rem;">
     </div>
 </div>
-
-@section Scripts {
-    <script src="~/Scripts/Page/Medication/Filter.js"></script>
-    <script src="~/Scripts/Page/Medication/Delete.js"></script>
-}
 
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">

@@ -12,6 +12,7 @@ namespace AL.Areas.Medication.Controllers
     {
         private readonly MedicationBLL _bll = new MedicationBLL();
 
+        // Index
         public ActionResult Index()
         {
             try
@@ -38,9 +39,6 @@ namespace AL.Areas.Medication.Controllers
         {
             try
             {
-                if (Request.Url.Segments.Length > 4)
-                    return RedirectToAction("Index");
-
                 return View(new MedicationEntity { ModifiedDate = DateTime.Now });
             }
             catch (Exception)
@@ -74,7 +72,7 @@ namespace AL.Areas.Medication.Controllers
         {
             try
             {
-                if (!id.HasValue || Request.Url.Segments.Length > 5)
+                if (!id.HasValue)
                     return RedirectToAction("Index");
 
                 if (Session["AllowedEditId"] == null)
@@ -150,7 +148,7 @@ namespace AL.Areas.Medication.Controllers
             }
         }
 
-        // Check Duplicates
+        // Check Duplicates (AJAX)
         public JsonResult CheckDuplicate(string patient, string drug, decimal? dosage, DateTime? date, int? id = null)
         {
             try
@@ -199,11 +197,12 @@ namespace AL.Areas.Medication.Controllers
             }
         }
 
-        // Helper Method Save Action
+        // Handle Submit (Helper)
         private ActionResult HandleSubmit(Func<MedicationEntity> saveAction, MedicationEntity entity, string successType)
         {
             try
             {
+                //  Validate model
                 if (!ModelState.IsValid)
                 {
                     var errors = ModelState.Values
@@ -219,18 +218,20 @@ namespace AL.Areas.Medication.Controllers
 
                 var result = saveAction();
 
+                // success
                 if (result.IsSuccess)
                 {
-                    TempData["ToastMessage"] = result.MessageList.FirstOrDefault() ?? "Operation successful.";
+                    TempData["ToastMessage"] = string.Join(", ", result.MessageList);
                     TempData["ToastType"] = successType;
                     return RedirectToAction("Index");
                 }
 
+                // failed
                 TempData["ToastMessage"] = string.Join(", ", result.MessageList);
                 TempData["ToastType"] = "danger";
-
                 return View(entity);
             }
+
             catch (Exception)
             {
                 TempData["ToastMessage"] = "An unexpected error occurred while saving the record.";
@@ -238,5 +239,6 @@ namespace AL.Areas.Medication.Controllers
                 return View(entity);
             }
         }
+
     }
 }

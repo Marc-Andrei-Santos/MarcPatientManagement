@@ -8,8 +8,6 @@ namespace AL
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            // Enable attribute routing
             routes.MapMvcAttributeRoutes();
 
             // Default route
@@ -19,7 +17,7 @@ namespace AL
                 defaults: new { controller = "Medication", action = "Index", id = UrlParameter.Optional }
             ).DataTokens["area"] = "Medication";
 
-            // Catch-all for 404
+            // 404
             routes.MapRoute(
                 name: "NotFound",
                 url: "{*url}",

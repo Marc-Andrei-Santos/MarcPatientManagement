@@ -51,7 +51,6 @@ namespace BLL
                 var validation = ValidateEntity(entity, true);
                 if (validation != null) return validation;
 
-                // lahat ng processing muna, saka current record check sa pinakababa
                 if (currentRecord.Patient == entity.Patient &&
                     currentRecord.Drug == entity.Drug &&
                     currentRecord.Dosage == entity.Dosage)
@@ -77,7 +76,6 @@ namespace BLL
             }
             return result;
         }
-
 
         // Delete
         public MedicationEntity Delete(int id)
@@ -105,7 +103,7 @@ namespace BLL
             return result;
         }
 
-        // Helper Validate Entity
+        // Validate Entity (Helper)
         private MedicationEntity ValidateEntity(MedicationEntity entity, bool isUpdate = false)
         {
             var result = new MedicationEntity();
