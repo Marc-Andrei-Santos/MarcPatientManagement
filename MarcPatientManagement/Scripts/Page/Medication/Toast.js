@@ -1,11 +1,12 @@
-﻿// Toast.js - use this exact file
-(function () {
-    // Create and show a toast that matches the server-side _Toast.cshtml style
-    window.showToast = function (message, type) {
+﻿(function () 
+{
+    window.showToast = function (message, type) 
+    {
         type = (type || "danger").toLowerCase();
 
-        var alertClass = "alert-info text-dark fw-semibold"; // default
-        switch (type) {
+        var alertClass = "alert-info text-dark fw-semibold"; 
+        switch (type) 
+        {
             case "success":
                 alertClass = "alert-success text-center toast-success-dark fw-semibold";
                 break;
@@ -18,7 +19,6 @@
                 break;
         }
 
-        // create a unique id to avoid duplicate id collisions
         var uniqueId = "toastMessage_" + Date.now();
 
         var $toast = $(
@@ -30,20 +30,24 @@
 
         $("body").append($toast);
 
-        // auto-hide after 2.6s (same behaviour as server-side partial)
-        setTimeout(function () {
-            $toast.fadeOut("slow", function () {
+        setTimeout(function () 
+        {
+            $toast.fadeOut("slow", function () 
+            {
                 $(this).remove();
             });
         }, 2600);
     };
 
-    // Fade out server-rendered toast (#toastMessage) if any (keeps your previous behaviour)
-    $(function () {
+    $(function () 
+    {
         var serverToast = $("#toastMessage");
-        if (serverToast.length) {
-            setTimeout(function () {
-                serverToast.fadeOut("slow", function () {
+        if (serverToast.length) 
+        {
+            setTimeout(function () 
+            {
+                serverToast.fadeOut("slow", function () 
+                {
                     $(this).remove();
                 });
             }, 2600);
