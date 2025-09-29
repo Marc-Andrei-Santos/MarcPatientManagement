@@ -16,7 +16,7 @@
 </head>
 <body class="notfound-page-container">
     <img src="~/Content/images/confuse.jpg" alt="Lost" class="notfound-page-image" />
-    <div class="notfound-page-title">404 - Page Not Found</div>
+    <div class="notfound-page-title">404 - LOVE NOT FOUND</div>
     <div class="notfound-page-label">Looks like you're lost</div>
     <div class="notfound-page-desc">The page you are looking for does not exist or has been moved.</div>
     <a href="@Url.Action("Index", "Medication", new { area = "Medication" })" class="notfound-page-btn">
@@ -24,6 +24,28 @@
     </a>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <style>
 
@@ -80,10 +102,13 @@
 }
 
     .notfound-page-btn:hover {
-        background-color: #055293;
+        background-color: #1a73e8; 
+        color: #fff; 
         transform: translateY(-2px);
         text-decoration: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
+
 @@media (max-width: 576px) {
     .notfound-page-image {
         max-width: 250px;

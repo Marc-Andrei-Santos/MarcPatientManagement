@@ -45,7 +45,6 @@ namespace AL.Areas.Medication.Controllers
             }
             catch (Exception)
             {
-                // log exception here
                 TempData["ToastMessage"] = "An error occurred while preparing the create form.";
                 TempData["ToastType"] = "danger";
                 return RedirectToAction("Index");
@@ -152,7 +151,7 @@ namespace AL.Areas.Medication.Controllers
         }
 
         // Check Duplicates
-        public JsonResult CheckDuplicate(string patient, string drug, decimal? dosage, int? id = null)
+        public JsonResult CheckDuplicate(string patient, string drug, decimal? dosage, DateTime? date, int? id = null)
         {
             try
             {
@@ -161,16 +160,26 @@ namespace AL.Areas.Medication.Controllers
                 if (id.HasValue)
                     allRecords = allRecords.Where(x => x.Id != id.Value).ToList();
 
-                if (allRecords.Any(x => x.Patient == patient && x.Drug == drug && x.Dosage == dosage))
+                // Patient + Drug + Dosage
+                if (date.HasValue && allRecords.Any(x =>
+                    x.Patient == patient &&
+                    x.Drug == drug &&
+                    x.Dosage == dosage &&
+                    x.ModifiedDate.Date == date.Value.Date))
                 {
                     return Json(new { isDuplicate = true, message = MessageUtil.RecordAlreadyExists, isValid = false });
                 }
 
-                if (allRecords.Any(x => x.Patient == patient && x.Drug == drug))
+                // Patient + Drug
+                if (date.HasValue && allRecords.Any(x =>
+                    x.Patient == patient &&
+                    x.Drug == drug &&
+                    x.ModifiedDate.Date == date.Value.Date))
                 {
                     return Json(new { isDuplicate = true, message = MessageUtil.DuplicateRecord, isValid = false });
                 }
 
+                // No changes in Edit
                 if (id.HasValue)
                 {
                     var currentRecord = _bll.GetById(id.Value);
@@ -182,7 +191,6 @@ namespace AL.Areas.Medication.Controllers
                         return Json(new { isDuplicate = true, message = MessageUtil.NoChanges, isValid = false });
                     }
                 }
-
                 return Json(new { isDuplicate = false, isValid = true });
             }
             catch (Exception)

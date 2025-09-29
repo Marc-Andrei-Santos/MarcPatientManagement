@@ -5,41 +5,60 @@ namespace UL
 {
     public static class ValidationUtil
     {
-        public const string PatientPattern = @"^(?=.*\p{L})[\p{L}\p{M}\s'-]+$";
-        public const string DrugPattern = @"^[A-Za-z0-9]+(\s+[A-Za-z0-9]+)*$";
-        public const string DosagePattern = @"^\d+(\.\d{1,4})?$";
+        private const string PatientPattern = @"^[A-Za-z' -]+$";
+        private const string DrugPattern = @"^[A-Za-z0-9 ]+$";
+        private const string DosagePattern = @"^(?:0\.\d{1,4}|[1-9]\d{0,2}(?:\.\d{1,4})?)$";
 
-        // IsValid Patient
+        //  IsValid Patient
         public static bool IsValidPatient(string input)
         {
-            if (string.IsNullOrWhiteSpace(input) || input.Length > 50)
+            if (string.IsNullOrWhiteSpace(input))
                 return false;
 
-            var match = Regex.Match(input, PatientPattern);
+            input = input.Trim();
 
-            if (match.Success && (input.StartsWith(" ") || input.EndsWith(" ")))
+            if (input.Length == 0 || input.Length > 50)
                 return false;
 
-            return match.Success;
+            while (input.Contains("  "))
+                input = input.Replace("  ", " ");
+
+            return Regex.IsMatch(input, PatientPattern);
         }
 
-        // IsValid Drug
+        //  IsValid Drug
         public static bool IsValidDrug(string input)
         {
-            if (string.IsNullOrWhiteSpace(input) || input.Length > 50)
+            if (string.IsNullOrWhiteSpace(input))
                 return false;
+
+            input = input.Trim();
+
+            if (input.Length == 0 || input.Length > 50)
+                return false;
+
+            while (input.Contains("  "))
+                input = input.Replace("  ", " ");
 
             return Regex.IsMatch(input, DrugPattern);
         }
 
-        // IsValid Dosage
+        //  IsValid Dosage
         public static bool IsValidDosage(decimal? input)
         {
-            if (!input.HasValue || input <= 0)
+            if (!input.HasValue)
                 return false;
 
-            string value = input.Value.ToString("0.####");
-            return Regex.IsMatch(value, DosagePattern);
+            decimal value = input.Value;
+
+            if (value <= 0 || value < 0.0001m || value > 999.9999m)
+                return false;
+
+            if (value != Math.Round(value, 4))
+                return false;
+
+            string strValue = value.ToString("0.####");
+            return Regex.IsMatch(strValue, DosagePattern);
         }
     }
 }

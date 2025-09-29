@@ -16,13 +16,11 @@
         public const string AllFieldsRequired = "All field/s are required.";
         public const string DuplicateRecord = "Cannot add same drug to a patient.";
         public const string RecordAlreadyExists = "Record already exists.";
-        public const string NoChanges = "It seems nothing was changed.";
+        public const string NoChanges = "No changes has made";
 
         // Input Validation Messages
-        public const string InvalidPatient = "Patient name is invalid. It must only contain letters, spaces, hyphen (-), or apostrophe (') and cannot start or end with a space.";
-        public const string InvalidDrug = "Drug name is invalid. It must only contain letters, numbers, spaces, hyphen (-), or apostrophe (').";
+        public const string InvalidPatient = "Patient name is invalid. It must only contain letters, spaces, hyphen (-), or apostrophe (')";
+        public const string InvalidDrug = "Drug name is invalid. It must only contain letters, numbers and spaces";
         public const string InvalidDosage = "Dosage is invalid. Must be greater than zero and can have up to 4 decimal places.";
-        public const string NegativeDosage = "Dosage cannot be negative.";
-
     }
 }

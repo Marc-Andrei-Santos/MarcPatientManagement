@@ -46,8 +46,12 @@ namespace BLL
             var result = new MedicationEntity();
             try
             {
-       
                 var currentRecord = GetById(entity.Id);
+
+                var validation = ValidateEntity(entity, true);
+                if (validation != null) return validation;
+
+                // lahat ng processing muna, saka current record check sa pinakababa
                 if (currentRecord.Patient == entity.Patient &&
                     currentRecord.Drug == entity.Drug &&
                     currentRecord.Dosage == entity.Dosage)
@@ -56,19 +60,15 @@ namespace BLL
                     result.MessageList.Add(MessageUtil.NoChanges);
                     return result;
                 }
-            
-                var validation = ValidateEntity(entity, true);
-                if (validation != null) return validation;
 
                 var success = _dal.Update(entity);
                 result.IsSuccess = success;
                 result.MessageList.Add(success ? MessageUtil.RecordUpdated : MessageUtil.UpdateFailed);
             }
-
             catch (ApplicationException ex)
             {
                 result.IsSuccess = false;
-                result.MessageList.Add(ex.Message); 
+                result.MessageList.Add(ex.Message);
             }
             catch (Exception ex)
             {
@@ -77,6 +77,7 @@ namespace BLL
             }
             return result;
         }
+
 
         // Delete
         public MedicationEntity Delete(int id)

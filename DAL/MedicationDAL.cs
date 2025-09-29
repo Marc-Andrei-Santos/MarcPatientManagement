@@ -61,7 +61,6 @@ namespace DAL
                         cmd.Parameters.AddWithValue("@Patient", entity.Patient);
                         cmd.Parameters.AddWithValue("@Drug", entity.Drug);
                         cmd.Parameters.AddWithValue("@Dosage", entity.Dosage);
-                        cmd.Parameters.AddWithValue("@ModifiedDate", entity.ModifiedDate);
 
                         conn.Open();
                         cmd.ExecuteNonQuery();
