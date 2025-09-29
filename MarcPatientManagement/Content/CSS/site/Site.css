@@ -124,8 +124,8 @@ body {
         padding: 9px 12px;
         vertical-align: middle;
         border-bottom: 1px solid #e5e5e5;
-        text-transform: none !important; /* prevent uppercase */
-        font-weight: normal !important; /* prevent bold from Bootstrap */
+        text-transform: none !important; 
+        font-weight: normal !important;
     }
 
     .custom-table .filter-input {
@@ -135,8 +135,8 @@ body {
         border-radius: 6px;
         border: 1px solid #ccc;
         transition: all 0.2s ease-in-out;
-        text-transform: none !important; /* prevent uppercase */
-        font-weight: normal !important; /* prevent bold */
+        text-transform: none !important;
+        font-weight: normal !important;
     }
 
         .custom-table .filter-input:focus {
@@ -163,8 +163,9 @@ body {
     justify-content: center;
     gap: 8px;
 }
-/* Reset Button */
 
+
+/* Reset Button */
 #resetBtn {
     visibility: hidden;
     font-weight: normal !important;
@@ -180,14 +181,12 @@ body {
     #resetBtn:hover {
         text-decoration: underline !important;
     }
-/* Search label same color as Edit/Delete */
 
 .search-label span {
     color: #0d6efd !important;
     font-weight: normal !important;
     text-transform: none !important;
 }
-/* Edit/Delete links */
 
 .patient-table a, .patient-table .delete-btn {
     color: #0d6efd !important;
@@ -199,7 +198,6 @@ body {
     .patient-table a:hover, .patient-table .delete-btn:hover {
         text-decoration: underline !important;
     }
-/* GitHub link and other elements */
 
 .sidebar .github-link {
     margin-top: auto;
@@ -220,7 +218,6 @@ body {
         position: relative;
         left: -6px;
     }
-/* Logo text */
 
 .logo-text {
     font-family: 'Montserrat', sans-serif;

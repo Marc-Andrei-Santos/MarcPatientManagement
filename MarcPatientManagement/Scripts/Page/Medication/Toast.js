@@ -28,6 +28,8 @@
             '</div>'
         );
 
+
+
         $("body").append($toast);
 
         setTimeout(function () 
